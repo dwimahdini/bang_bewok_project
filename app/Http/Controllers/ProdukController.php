@@ -93,21 +93,11 @@ class ProdukController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validatedData = $request->validate([
-            'nama_produk'       => 'required|string|max:255',
-            'jumlah'            => 'required|integer|min:1',
-            'harga'             => 'required|numeric|min:0.01',
-            'satuan'            => 'required|string|max:255',
-            'tanggal_kadaluarsa'=> 'required|date|after:today',
-            'status_tersedia'   => 'required|in:tersedia,menipis,tidak_tersedia',
-            'gambar'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status_kedaluarsa' => 'required|in:aman,mendekati,kedaluarsa',
-        ]);
-
+        // Validasi dan update produk
         $produk = Produk::findOrFail($id);
-        $produk->update($validatedData);
+        $produk->update($request->all());
 
-        return redirect()->back()->with('success', 'Produk berhasil diupdate!');
+        return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
     }
 
     /**

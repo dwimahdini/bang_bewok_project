@@ -17,20 +17,17 @@ class StaffController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi data
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'notel' => 'required|string|max:15',
-            'email' => 'required|email|max:255|unique:staff,email',
-            'posisi' => 'required|in:staf,kepala cabang',
-            'cabang' => 'nullable|in:cabang 1,cabang 2,cabang 3',
+            'email' => 'required|email|max:255',
+            'posisi' => 'required|string|max:255',
+            'cabang' => 'required|string|max:255',
         ]);
 
-        // Simpan data ke database
         Staff::create($validatedData);
 
-        // Redirect atau tampilkan pesan sukses
-        return redirect()->route('staff.index')->with('success', 'Staf berhasil ditambahkan.');
+        return redirect()->route('staff.index')->with('success', 'Staf baru berhasil ditambahkan.');
     }
 
     public function destroy($id)

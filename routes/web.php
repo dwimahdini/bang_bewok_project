@@ -9,6 +9,8 @@ use App\Http\Controllers\StaffController;
 Route::get('/inventori', [ProdukController::class, 'index'])->name('produk.index');
 // Route untuk menyimpan produk ke database
 Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.store');
+// Route untuk mengedit produk
+Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
 // Route menghapus produk
 Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 

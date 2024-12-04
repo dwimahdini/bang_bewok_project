@@ -12,7 +12,7 @@
         <div class="flex flex-col md:flex-row md:items-center gap-2 mb-4">
             <select id="sortCriteria" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300" onchange="sortTable()">
                 <option value="" disabled selected>Urutkan</option>
-                <option value="nama_produk">Nama (A-Z)</option>
+                <option value="nama_produk">Abjad</option>
                 <option value="status_tersedia">Status Ketersediaan</option>
                 <option value="status_kedaluarsa">Status Kedaluarsa</option>
             </select>
@@ -22,7 +22,7 @@
                 onkeyup="searchTable()" 
                 placeholder="Cari Produk" 
                 class="flex-grow border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300">
-            <button onclick="openModal()" class="bg-green-500 text-white px-3 py-1.5 text-sm rounded-lg hover:bg-green-600 transition duration-300">
+            <button onclick="openModal()" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300">
                 Tambah Produk
             </button>
         </div>
@@ -30,7 +30,7 @@
         <!-- Tabel Produk -->
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg border border-gray-300">
-                <thead class="bg-blue-500">
+                <thead class="bg-[#906808]">
                     <tr>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">No</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Gambar</th>
@@ -61,25 +61,36 @@
                         <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">{{ $p->satuan }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">{{ $p->tanggal_kadaluarsa->format('Y-m-d') }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">
-                            <span class="px-2 py-1 rounded text-white
-                                @if($p->status_kedaluarsa == 'aman') bg-green-500
-                                @elseif($p->status_kedaluarsa == 'mendekati') bg-yellow-500
-                                @else bg-red-500
-                                @endif">
+                            <span class="px-2 py-1 rounded shadow"
+                                style="
+                                    @if($p->status_kedaluarsa == 'aman') background-color: #d4edda; color: #155724;
+                                    @elseif($p->status_kedaluarsa == 'mendekati') background-color: #fff3cd; color: #856404;
+                                    @else background-color: #f8d7da; color: #721c24;
+                                    @endif">
                                 {{ ucfirst($p->status_kedaluarsa) }}
                             </span>
                         </td>
                         <td class="px-4 py-2 whitespace-nowrap text-xs text-center border-r border-gray-300">
-                            <span class="px-2 py-1 rounded text-white
-                                @if($p->status_tersedia == 'tersedia') bg-green-500
-                                @elseif($p->status_tersedia == 'menipis') bg-yellow-500
-                                @else bg-red-500
-                                @endif">
+                            <span class="px-2 py-1 rounded shadow"
+                                style="
+                                    @if($p->status_tersedia == 'tersedia') background-color: #d4edda; color: #155724;
+                                    @elseif($p->status_tersedia == 'menipis') background-color: #fff3cd; color: #856404;
+                                    @else background-color: #f8d7da; color: #721c24;
+                                    @endif">
                                 {{ ucfirst($p->status_tersedia) }}
                             </span>
                         </td>
                         <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center">
-                            <button class="bg-yellow-400 text-white px-2 py-1 rounded-lg hover:bg-yellow-500 transition duration-300" onclick="openEditModal()">Edit</button>
+                            <button class="bg-yellow-400 text-white px-2 py-1 rounded-lg hover:bg-yellow-500 transition duration-300" 
+                                    onclick="openEditModal(this)" 
+                                    data-id="{{ $p->id }}"
+                                    data-nama="{{ $p->nama_produk }}"
+                                    data-jumlah="{{ $p->jumlah }}"
+                                    data-harga="{{ $p->harga }}"
+                                    data-satuan="{{ $p->satuan }}"
+                                    data-tanggal="{{ $p->tanggal_kadaluarsa->format('Y-m-d') }}">
+                                Edit
+                            </button>
                             <form action="{{ route('produk.destroy', $p->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')
@@ -189,42 +200,29 @@
             <form id="editForm" action="#" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="mb-4">
-                    <label for="editNamaProduk" class="block text-sm font-medium mb-2">Nama Produk</label>
-                    <input type="text" id="editNamaProduk" name="nama_produk" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none transition duration-300" required>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="editNamaProduk" class="block text-sm font-medium mb-2">Nama Produk</label>
+                        <input type="text" id="editNamaProduk" name="nama_produk" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required>
+                    </div>
+                    <div>
+                        <label for="editJumlahProduk" class="block text-sm font-medium mb-2">Jumlah</label>
+                        <input type="number" id="editJumlahProduk" name="jumlah" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required min="1">
+                    </div>
+                    <div>
+                        <label for="editHargaProduk" class="block text-sm font-medium mb-2">Harga</label>
+                        <input type="number" id="editHargaProduk" name="harga" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required min="0.01" step="0.01">
+                    </div>
+                    <div>
+                        <label for="editSatuanProduk" class="block text-sm font-medium mb-2">Satuan/Berat</label>
+                        <input type="text" id="editSatuanProduk" name="satuan" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required>
+                    </div>
+                    <div>
+                        <label for="editKadaluarsaProduk" class="block text-sm font-medium mb-2">Tanggal Kadaluarsa</label>
+                        <input type="date" id="editKadaluarsaProduk" name="tanggal_kadaluarsa" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required>
+                    </div>
                 </div>
-                <div class="mb-4">
-                    <label for="editJumlahProduk" class="block text-sm font-medium mb-2">Jumlah</label>
-                    <input type="number" id="editJumlahProduk" name="jumlah" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none transition duration-300" required min="1">
-                </div>
-                <div class="mb-4">
-                    <label for="editHargaProduk" class="block text-sm font-medium mb-2">Harga</label>
-                    <input type="number" id="editHargaProduk" name="harga" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none transition duration-300" required min="0.01" step="0.01">
-                </div>
-                <div class="mb-4">
-                    <label for="editSatuanProduk" class="block text-sm font-medium mb-2">Satuan/Berat</label>
-                    <input type="text" id="editSatuanProduk" name="satuan" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none transition duration-300" required>
-                </div>
-                <div class="mb-4">
-                    <label for="editKadaluarsaProduk" class="block text-sm font-medium mb-2">Tanggal Kadaluarsa</label>
-                    <input type="date" id="editKadaluarsaProduk" name="tanggal_kadaluarsa" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none transition duration-300" required>
-                </div>
-                <div class="mb-4">
-                    <label for="editStatusProduk" class="block text-sm font-medium mb-2">Status</label>
-                    <select id="editStatusProduk" name="status" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none transition duration-300" required>
-                        <option value="tersedia">Tersedia</option>
-                        <option value="tidak_tersedia">Tidak Tersedia</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label for="editStatusKadaluarsa" class="block text-sm font-medium mb-2">Status Kadaluarsa</label>
-                    <select id="editStatusKadaluarsa" name="status_kadaluarsa" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none transition duration-300" required>
-                        <option value="aman">Aman</option>
-                        <option value="mendekati">Mendekati</option>
-                        <option value="kedaluarsa">Kedaluarsa</option>
-                    </select>
-                </div>
-                <div class="flex justify-end">
+                <div class="flex justify-end mt-4">
                     <button type="button" onclick="closeEditModal()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300 mr-2">Batal</button>
                     <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Simpan</button>
                 </div>
@@ -340,16 +338,23 @@
         });
     }
 
-    // Open edit modal
-    function openEditModal() {
+    // Open edit modal and populate form
+    function openEditModal(button) {
+        const id = button.getAttribute('data-id');
+        const form = document.getElementById('editForm');
+        form.action = `/produk/${id}`;
+
+        document.getElementById('editNamaProduk').value = button.getAttribute('data-nama');
+        document.getElementById('editJumlahProduk').value = button.getAttribute('data-jumlah');
+        document.getElementById('editHargaProduk').value = button.getAttribute('data-harga');
+        document.getElementById('editSatuanProduk').value = button.getAttribute('data-satuan');
+        document.getElementById('editKadaluarsaProduk').value = button.getAttribute('data-tanggal');
+
         document.getElementById("editModal").classList.remove("hidden");
     }
 
     // Close edit modal
     function closeEditModal() {
         document.getElementById("editModal").classList.add("hidden");
-        document.getElementById('editGambarProduk').value = ''; // Reset file input
-        document.getElementById('editImagePreview').classList.add('hidden');
-        document.getElementById('editDropText').classList.remove('hidden');
     }
 </script>
