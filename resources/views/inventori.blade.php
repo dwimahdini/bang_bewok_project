@@ -22,7 +22,7 @@
                 onkeyup="searchTable()" 
                 placeholder="Cari Produk" 
                 class="flex-grow border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300">
-            <button onclick="openModal()" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300">
+            <button onclick="openModal()" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300" style="background-color: #5D5108; color: white;" onmouseover="this.style.backgroundColor='#C3AB12'" onmouseout="this.style.backgroundColor='#5D5108'">
                 Tambah Produk
             </button>
         </div>
@@ -30,7 +30,7 @@
         <!-- Tabel Produk -->
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg border border-gray-300">
-                <thead class="bg-[#906808]">
+                <thead style="background-color: #C3AB12;">
                     <tr>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">No</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Gambar</th>

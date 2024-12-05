@@ -91,12 +91,12 @@
     </nav>
 
     <section class="dashboard">
-      <div class="top" style="border-bottom: 2px solid #F6EBA6;">
+      <div class="top" style="border-bottom: 2px solid #F6EBA6; color: white; background-color: white; box-shadow: 0 4px 8px rgba(80, 76, 44, 0.5);">
         <i class="fas fa-bars sidebar-toggle"></i>
-        <div class="logo-container" style="display: flex; align-items: center;">
-          <i class="bx bx-bell" style="font-size: 20px; margin-right: 15px;"></i>
-          <span style="font-size: 15px; margin-right: 10px;">Admin</span>
-          <img src="img/logo.png" alt="" style="border: 1px solid #000;"/>
+        <div class="logo-container" style="display: flex; align-items: center; color: white; margin-right: -1260px; justify-content: flex-start; width: 100%;">
+          <i class="bx bx-bell" style="font-size: 20px; margin-right: 15px; color: black; background-color: #F0F0F0; padding: 5px; border-radius: 50%;"></i>
+          <span style="font-size: 15px; margin-right: 10px; color: black; font-weight: bold;">Admin</span>
+          <img src="img/logo.png" alt="" style="border: 1px solid #000; border-radius: 50%; width: 40px; height: 40px;"/>
         </div>
       </div>
 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\CabangController;
 
 // Route untuk mengambil produk di database lalu ditampilkan
 Route::get('/inventori', [ProdukController::class, 'index'])->name('produk.index');
@@ -21,6 +22,9 @@ Route::delete('/staff/{id}', [StaffController::class, 'destroy'])->name('staff.d
 Route::get('/staff/{id}/edit', [StaffController::class, 'edit'])->name('staff.edit');
 Route::put('/staff/{id}', [StaffController::class, 'update'])->name('staff.update');
 
+Route::get('/cabang', [CabangController::class, 'index'])->name('cabang.index');
+Route::post('/cabangs', [CabangController::class, 'store'])->name('cabangs.store');
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -31,8 +35,4 @@ Route::get('/beranda', function () {
 
 Route::get('/pengelolaan', function () {
     return view('pengelolaan');
-});
-
-Route::get('/cabang', function () {
-    return view('cabang');
-});
+});     
