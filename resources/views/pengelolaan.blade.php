@@ -104,14 +104,19 @@
                         <label for="password" class="block text-sm font-medium mb-2 w-1/3">Kata Sandi</label>
                         <div class="w-2/3 flex items-center">
                             <input type="password" id="password" name="password" autocomplete="off" class="flex-grow border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required>
-                            <button type="button" onclick="togglePasswordVisibility()" class="ml-2 text-sm text-gray-600 hover:text-gray-800 focus:outline-none">
+                            <button type="button" onclick="togglePasswordVisibility('password', 'togglePasswordIcon')" class="ml-2 text-sm text-gray-600 hover:text-gray-800 focus:outline-none">
                                 <i id="togglePasswordIcon" class="fas fa-eye"></i>
                             </button>
                         </div>
                     </div>
                     <div class="mb-4 flex items-center">
                         <label for="confirmPassword" class="block text-sm font-medium mb-2 w-1/3">Konfirmasi Kata Sandi</label>
-                        <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="off" class="w-2/3 border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required>
+                        <div class="w-2/3 flex items-center">
+                            <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="off" class="flex-grow border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required oninput="validatePassword()">
+                            <button type="button" onclick="togglePasswordVisibility('confirmPassword', 'toggleConfirmPasswordIcon')" class="ml-2 text-sm text-gray-600 hover:text-gray-800 focus:outline-none">
+                                <i id="toggleConfirmPasswordIcon" class="fas fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     <div id="passwordWarning" class="text-red-500 text-sm mb-4 hidden">Kata sandi dan konfirmasi kata sandi tidak cocok.</div>
                     <div class="mb-4 flex items-center">
@@ -130,7 +135,7 @@
             </div>
             <div class="flex justify-end mt-4">
                 <button type="button" onclick="closeAddPengelolaanModal()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300 mr-2">Batal</button>
-                <button type="button" onclick="validatePassword()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Simpan</button>
+                <button type="button" onclick="submitForm()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Simpan</button>
             </div>
         </form>
     </div>
@@ -251,9 +256,9 @@
         }
     }
 
-    function togglePasswordVisibility() {
-        const passwordInput = document.getElementById('password');
-        const toggleIcon = document.getElementById('togglePasswordIcon');
+    function togglePasswordVisibility(inputId, iconId) {
+        const passwordInput = document.getElementById(inputId);
+        const toggleIcon = document.getElementById(iconId);
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';
             toggleIcon.classList.remove('fa-eye');
@@ -274,8 +279,16 @@
             passwordWarning.classList.remove('hidden');
         } else {
             passwordWarning.classList.add('hidden');
-            alert('Kata sandi cocok. Formulir dapat disimpan.');
+        }
+    }
+
+    function submitForm() {
+        const passwordWarning = document.getElementById('passwordWarning');
+        if (passwordWarning.classList.contains('hidden')) {
+            alert('Formulir dapat disimpan.');
             // Proceed with form submission or further processing
+        } else {
+            alert('Periksa kembali kata sandi Anda.');
         }
     }
 </script>
