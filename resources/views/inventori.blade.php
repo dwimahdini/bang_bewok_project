@@ -111,13 +111,13 @@
 
 <!-- Modal -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden" tabindex="-1" aria-hidden="true">
-    <div class="bg-white rounded-lg p-6 w-full max-w-4xl flex flex-col md:flex-row">
+    <div class="bg-white rounded-lg p-4 w-full max-w-2xl flex flex-col shadow-lg transition-transform transform scale-95 hover:scale-100">
         <!-- Bagian Kiri: Preview Gambar -->
-        <div class="flex-1 mb-4 md:mb-0 md:mr-4 relative">
-            <h2 class="text-xl font-semibold mb-4 mt-2">Tambah Produk Baru</h2>
+        <div class="flex-1 mb-4 relative">
+            <h2 class="text-lg font-semibold mb-2 text-center">Tambah Produk Baru</h2>
             <div 
                 id="gambarProdukContainer" 
-                class="border border-gray-300 rounded-lg px-4 py-2 flex justify-center items-center h-48"
+                class="border border-gray-300 rounded-lg px-4 py-2 flex justify-center items-center h-32 bg-gray-50 hover:bg-gray-100 transition duration-300 cursor-pointer"
                 ondragover="allowDrop(event)"
                 ondrop="dropImage(event)"
                 onclick="document.getElementById('gambarProduk').click()"
@@ -131,7 +131,7 @@
                     onchange="previewImage()"
                 >
                 <p id="dropText" class="text-gray-500">Drag & Drop Gambar di sini atau klik untuk memilih</p>
-                <img id="imagePreview" class="mt-2 hidden max-w-full h-auto absolute top-0 left-0 object-contain" alt="Pratinjau Gambar">
+                <img id="imagePreview" class="mt-2 hidden max-w-full h-auto object-contain" alt="Pratinjau Gambar">
             </div>
         </div>
 
@@ -139,31 +139,31 @@
         <div class="flex-1">
             <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4">
                     <div>
-                        <label for="namaProduk" class="block text-sm font-medium mb-2">Nama Produk</label>
-                        <input type="text" id="namaProduk" name="nama_produk" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required autocomplete="off">
+                        <label for="namaProduk" class="block text-sm font-medium mb-1">Nama Produk</label>
+                        <input type="text" id="namaProduk" name="nama_produk" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required autocomplete="off">
                     </div>
                     <div>
-                        <label for="jumlahProduk" class="block text-sm font-medium mb-2">Jumlah</label>
-                        <input type="number" id="jumlahProduk" name="jumlah" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required min="1" autocomplete="off">
+                        <label for="jumlahProduk" class="block text-sm font-medium mb-1">Jumlah</label>
+                        <input type="number" id="jumlahProduk" name="jumlah" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required min="1" autocomplete="off">
                     </div>
                     <div>
-                        <label for="hargaProduk" class="block text-sm font-medium mb-2">Harga</label>
-                        <input type="number" id="hargaProduk" name="harga" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required min="0.01" step="0.01" autocomplete="off">
+                        <label for="hargaProduk" class="block text-sm font-medium mb-1">Harga</label>
+                        <input type="number" id="hargaProduk" name="harga" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required min="0.01" step="0.01" autocomplete="off">
                     </div>
                     <div>
-                        <label for="satuanProduk" class="block text-sm font-medium mb-2">Satuan/Berat</label>
-                        <input type="text" id="satuanProduk" name="satuan" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required autocomplete="off">
+                        <label for="satuanProduk" class="block text-sm font-medium mb-1">Satuan/Berat</label>
+                        <input type="text" id="satuanProduk" name="satuan" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required autocomplete="off">
                     </div>
                     <div>
-                        <label for="kadaluarsaProduk" class="block text-sm font-medium mb-2">Tanggal Kadaluarsa</label>
-                        <input type="date" id="kadaluarsaProduk" name="tanggal_kadaluarsa" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required autocomplete="off">
+                        <label for="kadaluarsaProduk" class="block text-sm font-medium mb-1">Tanggal Kadaluarsa</label>
+                        <input type="date" id="kadaluarsaProduk" name="tanggal_kadaluarsa" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required autocomplete="off">
                     </div>
                 </div>
                 <div class="flex justify-end mt-4">
-                    <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300 mr-2">Batal</button>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Simpan</button>
+                    <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-300 mr-2">Batal</button>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Simpan</button>
                 </div>
             </form>
         </div>

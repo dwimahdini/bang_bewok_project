@@ -117,4 +117,13 @@ class ProdukController extends Controller
 
         return redirect()->route('produk.index')->with('status', 'Produk berhasil dihapus!');
     }
+
+    public function beranda()
+    {
+        $produkTersedia = Produk::where('status_tersedia', 'tersedia')->count();
+        $produkMenipis = Produk::where('status_tersedia', 'menipis')->count();
+        $produkTidakTersedia = Produk::where('status_tersedia', 'tidak tersedia')->count();
+
+        return view('beranda', compact('produkTersedia', 'produkMenipis', 'produkTidakTersedia'));
+    }
 }

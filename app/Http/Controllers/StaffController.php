@@ -4,16 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Staff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StaffController extends Controller
 {
+    
     public function index()
-    {
-        $staffs = Staff::all();
-        // Debugging: Check the retrieved data
-        // dd($staffs);
-        return view('staf', ['staffs' => $staffs]);
+{
+    if (Auth::check() && Auth::user()->role !== 'admin') {
+        return redirect('/')->with('error', 'Akses ditolak, hanya admin yang bisa mengakses halaman ini');
     }
+
+    $staffs = Staff::all();
+    return view('staf', ['staffs' => $staffs]);
+}
 
     public function store(Request $request)
     {
@@ -62,5 +66,4 @@ class StaffController extends Controller
 
         return redirect()->route('staff.index')->with('success', 'Staf berhasil diperbarui.');
     }
-
 }
