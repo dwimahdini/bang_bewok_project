@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@yield('title')</title>
 
+    @vite('resources/css/app.css')
+
     <link rel="icon" href="img/logo_bang_bewok.png" type="image/png" />
     
     <link
@@ -42,9 +44,9 @@
             </a>
           </li>
           <li>
-            <a href="/pengelolaan">
+            <a href="/penggunaakun">
                 <i class='bx bx-cog'></i>
-              <span class="link-name">Pengelolaan</span>
+              <span class="link-name">Pengelolaan Akun</span>
             </a>
           </li>
           <li>

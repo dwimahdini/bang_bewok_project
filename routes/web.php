@@ -7,7 +7,7 @@ use App\Http\Controllers\StaffController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\PesanController;
 use App\Http\Controllers\KeranjangController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PenggunaAkunController;
 
 // Route untuk mengambil produk di database lalu ditampilkan
 Route::get('/inventori', [ProdukController::class, 'index'])->name('produk.index');
@@ -42,9 +42,8 @@ Route::get('/login', function () {
     return view('login');
 });
 
-Route::get('/pengelolaan', function () {
-    return view('pengelolaan');
-});     
+Route::get('/penggunaakun', [PenggunaAkunController::class, 'index'])->name('penggunaakun.index');
+Route::post('/penggunaakun', [PenggunaAkunController::class, 'store'])->name('penggunaakun.store');
 
 Route::post('/keranjangStaf', [KeranjangController::class, 'addToCart'])->name('keranjangStaf');
 
