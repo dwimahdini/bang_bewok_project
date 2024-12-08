@@ -8,6 +8,7 @@ use App\Http\Controllers\CabangController;
 use App\Http\Controllers\PesanController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\PenggunaAkunController;
+use App\Http\Controllers\Auth\LoginController;
 
 // Route untuk mengambil produk di database lalu ditampilkan
 Route::get('/inventori', [ProdukController::class, 'index'])->name('produk.index');
@@ -38,9 +39,7 @@ Route::get('/beranda', function () {
     return view('beranda');
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
+Route::get('/login', [LoginController::class, 'showLoginForm']);
 
 Route::get('/penggunaakun', [PenggunaAkunController::class, 'index'])->name('penggunaakun.index');
 Route::post('/penggunaakun', [PenggunaAkunController::class, 'store'])->name('penggunaakun.store');

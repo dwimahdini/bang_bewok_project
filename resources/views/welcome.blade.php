@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nova Theme</title>
+    <title>Sistem Inventori Manajemen Bahan Baku</title>
     <meta name="Nova theme" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" type="image/png" href="assets/images/favicon.png"/>
 
@@ -72,7 +72,7 @@
     </div>
     <div class="container">
         <div class="header-container header">
-            <a href="#email-form">
+            <a href="/login">
                 <button class="header-btn" style="background-color: #EDCF15; color: black; font-weight: bold;">Login</button>
             </a>
         </div>
