@@ -8,6 +8,16 @@
     <div id="frameProduk" class="bg-white p-4 rounded-lg shadow-sm">
         <h1 class="text-2xl font-bold mb-4">Daftar Produk</h1>
 
+        <!-- Tampilkan data ketersediaan produk -->
+        <div class="mb-4">
+            <h2 class="text-lg font-semibold">Status Ketersediaan Produk</h2>
+            <ul class="list-disc pl-5">
+                <li>Tersedia: {{ $tersedia }}</li>
+                <li>Menipis: {{ $menipis }}</li>
+                <li>Tidak Tersedia: {{ $tidakTersedia }}</li>
+            </ul>
+        </div>
+
         <!-- Fitur Sort, Search, Tambah -->
         <div class="flex flex-col md:flex-row md:items-center gap-2 mb-4">
             <select id="sortCriteria" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300" onchange="sortTable()">
