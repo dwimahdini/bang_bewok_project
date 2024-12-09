@@ -1,126 +1,134 @@
 <!DOCTYPE html>
 <html lang="en">
-
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@yield('title')</title>
-
-    @vite('resources/css/app.css')
-
-    <link rel="icon" href="img/logo_bang_bewok.png" type="image/png" />
-    
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="css/style.css" />
-    <link href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css" rel="stylesheet">
-  </head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" href="img/logo_bang_bewok.png" type="image/png" />
   
-  <body>
-    <nav class="sidebar">
-      <div class="logo">
-        <div class="logo-icon">
-          <img src="img/logo_bang_bewok.png" alt="Logo" style="width: 60px; height: 60px;">
-        </div>
-        <span class="logo_name" style="font-size: 14px;">Es Coklat dan Roti Susu Bang Bewok</span>
-      </div>
-      <div class="menu-items">
-        <ul class="nav-links">
-          <li>
-            <a href="/beranda">
-                <i class='bx bx-home-alt'></i>
-              <span class="link-name">Beranda</span>
-            </a>
-          </li>
-          <li>
-            <a href="/inventori">
-                <i class='bx bx-layer'></i>
-              <span class="link-name">Inventori</span>
-            </a>
-          </li>
-          <li>
-            <a href="/penggunaakun">
-                <i class='bx bx-cog'></i>
-              <span class="link-name">Pengelolaan Akun</span>
-            </a>
-          </li>
-          <li>
-            <a href="/pesananMasuk">
-                <i class='bx bx-archive-in'></i>
-              <span class="link-name">Pesanan Masuk</span>
-            </a>
-          </li>
-          <li>
-            <a href="/pesan">
-                <i class='bx bx-archive-out' ></i>
-              <span class="link-name">Pesan Bahan Baku</span>
-            </a>
-          </li>
-          <li>
-            <a href="/keranjangStaf">
-              <i class='bx bx-basket'></i>
-              <span class="link-name">Keranjang</span>
-            </a>
-          </li>
-          <li>
-            <a href="/staf">
-                <i class='bx bx-group'></i>
-              <span class="link-name">Staf</span>
-            </a>
-          </li>
-          <li>
-            <a href="/cabang">
-              <i class='bx bx-store-alt' ></i>
-              <span class="link-name">Cabang</span>
-            </a>
-          </li>
-          <li>
-            <a href="/laporan">
-                <i class='bx bx-clipboard'></i>
-              <span class="link-name">Laporan</span>
-            </a>
-          </li>
-        </ul>
+  <title>@yield('title', 'Default Title')</title>
+  @vite('resources/css/app.css')
+</head>
+<body class="bg-gray-100 font-sans overflow-hidden">
 
-        <ul class="logout-mode">
-          <li>
-            <a href="/logout">
-                <i class='bx bx-log-out'></i>
-              <span class="link-name">Logout</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-
-    <section class="dashboard">
-      <div class="top" style="border-bottom: 2px solid #F6EBA6; color: white; background-color: white; box-shadow: 0 4px 8px rgba(80, 76, 44, 0.5);">
-        <i class="fas fa-bars sidebar-toggle"></i>
-        <div class="logo-container" style="display: flex; align-items: center; color: white; margin-right: -1260px; justify-content: flex-start; width: 100%;">
-          <i class="bx bx-bell" style="font-size: 20px; margin-right: 15px; color: black; background-color: #F0F0F0; padding: 5px; border-radius: 50%;"></i>
-          <span style="font-size: 15px; margin-right: 10px; color: black; font-weight: bold;">Admin</span>
-          <img src="img/logo.png" alt="" style="border: 1px solid #000; border-radius: 50%; width: 40px; height: 40px;"/>
-        </div>
-      </div>
-
-      <div class="content">
-        @yield('content')
-      </div>
-    </section>
+  <!-- Container utama -->
+  <div id="app" class="flex h-screen">
     
-    <script src="js/script.js"></script>
-    <script>
-      const sidebarToggle = document.querySelector('.sidebar-toggle');
-      const sidebar = document.querySelector('.sidebar');
+    <!-- Sidebar -->
+    <aside id="sidebar" class="bg-[#edcf15] shadow-md flex flex-col transition-width w-64 fixed inset-y-0 left-0 z-10">
+      <!-- Header Sidebar -->
+      <div class="flex items-center gap-4 px-4 py-6 border-b">
+        <img src="img/LOGO_BANG_BEWOK.ICO" alt="Logo" class="w-8 h-8 ml-2">
+        <span id="sidebar-logo-text" class="text-sm font-semibold text-black-800">Susu Coklat dan Roti Kukus Bang Bewok</span>
+      </div>
 
-      sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('close');
-      });
-    </script>
-  </body>
+      <!-- Menu navigasi -->
+      <nav id="menu" class="flex-1 px-2 py-6 space-y-4">
+        <a href="/beranda" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+          <i class="bx bx-home-alt text-xl ml-2 text-black"></i>
+          <span class="menu-text text-black">Beranda Admin</span>
+        </a>
+        <a href="/berandaStaf" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+            <i class="bx bx-home-alt text-xl ml-2 text-black"></i>
+            <span class="menu-text text-black">Beranda Staf</span>
+        </a>
+        <a href="/inventori" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+          <i class="bx bx-layer text-xl ml-2 text-black"></i>
+          <span class="menu-text text-black">Inventori</span>
+        </a>
+        <a href="/penggunaakun" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+          <i class="bx bx-universal-access text-xl ml-2 text-black"></i>
+          <span class="menu-text text-black">Kelola Akun</span>
+        </a>
+        <a href="/pesananMasuk" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+            <i class="bx bx-archive-in text-xl ml-2 text-black"></i>
+            <span class="menu-text text-black">Pesanan Masuk</span>
+        </a>
+        <a href="/pesan" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+            <i class="bx bx-archive-out text-xl ml-2 text-black"></i>
+            <span class="menu-text text-black">Pesan Bahan Baku</span>
+        </a>
+        <a href="/keranjangStaf" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+            <i class="bx bx-cart-alt text-xl ml-2 text-black"></i>
+            <span class="menu-text text-black">Keranjang</span>
+        </a>
+        <a href="/staf" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+            <i class="bx bx-group text-xl ml-2 text-black"></i>
+            <span class="menu-text text-black">Staf</span>
+        </a>
+        <a href="/cabang" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+            <i class="bx bx-store-alt text-xl ml-2 text-black"></i>
+            <span class="menu-text text-black">Cabang</span>
+        </a>
+        <a href="/laporan" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+            <i class="bx bx-clipboard text-xl ml-2 text-black"></i>
+            <span class="menu-text text-black">Laporan</span>
+        </a>
+      </nav>
+
+      <!-- Menu Logout -->
+      <a href="/logout" class="flex items-center gap-3 text-red hover:bg-blue-100 p-2 rounded ml-1 mb-1">
+          <i class="bx bx-log-out text-xl ml-2 text-red"></i>
+          <span class="menu-text text-black">Log Out</span>
+      </a>
+    </aside>
+
+    <!-- Main content -->
+    <div id="main-content" class="flex-1 flex flex-col ml-64 transition-all duration-300">
+      <!-- Header bar -->
+      <header class="flex items-center justify-between bg-white shadow p-6">
+        <button id="toggle-sidebar" class="text-gray-700">
+          <i class="bx bx-menu text-2xl"></i>
+        </button>
+        <div class="flex items-center gap-4 mr-4">
+          <!-- Notifikasi -->
+          <button class="relative">
+            <i class="bx bx-bell text-2xl text-gray-700"></i>
+            <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+          </button>
+          <!-- Profil pengguna -->
+          <div class="flex items-center gap-2">
+            <span class="text-gray-700 font-bold">Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Content area -->
+      <main class="flex-1 p-6 overflow-y-auto">
+        @yield('content') <!-- Konten spesifik dari halaman -->
+      </main>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Variabel untuk elemen sidebar dan tombol toggle
+    const sidebar = document.getElementById('sidebar');
+    const toggleSidebarButton = document.getElementById('toggle-sidebar');
+    const mainContent = document.getElementById('main-content');
+    const menuTexts = document.querySelectorAll('.menu-text');
+    const logoText = document.getElementById('sidebar-logo-text');
+
+    // Event listener untuk toggle sidebar
+    toggleSidebarButton.addEventListener('click', () => {
+      if (sidebar.classList.contains('w-64')) {
+        sidebar.classList.remove('w-64');
+        sidebar.classList.add('w-20');
+        logoText.classList.add('hidden'); // Sembunyikan teks logo
+        menuTexts.forEach(text => text.classList.add('hidden')); // Sembunyikan teks menu
+        mainContent.classList.remove('ml-64');
+        mainContent.classList.add('ml-20'); // Sesuaikan margin untuk konten utama
+      } else {
+        sidebar.classList.remove('w-20');
+        sidebar.classList.add('w-64');
+        logoText.classList.remove('hidden'); // Tampilkan teks logo
+        menuTexts.forEach(text => text.classList.remove('hidden')); // Tampilkan teks menu
+        mainContent.classList.remove('ml-20');
+        mainContent.classList.add('ml-64'); // Sesuaikan margin untuk konten utama
+      }
+    });
+  </script>
+</body>
 </html>

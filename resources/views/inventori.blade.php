@@ -47,27 +47,27 @@
                 <tbody id="productTable" class="bg-white divide-y divide-gray-200">
                     @foreach($produk as $p)
                     <tr class="hover:bg-gray-100 transition duration-300 ease-in-out">
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">{{ $loop->iteration }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">{{ $loop->iteration }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">
                             @if($p->gambar)
                                 <img src="{{ asset('storage/' . $p->gambar) }}" alt="Gambar Produk" class="w-10 h-10 object-cover rounded-full">
                             @else
                                 <img src="https://via.placeholder.com/50" alt="Gambar Produk" class="w-10 h-10 object-cover rounded-full">
                             @endif
                         </td>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 border-r border-gray-300">{{ $p->nama_produk }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">{{ $p->jumlah }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-right border-r border-gray-300">{{ number_format($p->harga, 2, ',', '.') }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">{{ $p->satuan }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 border-r border-gray-300">{{ $p->nama_produk }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">{{ $p->jumlah }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-right border-r border-gray-300">{{ number_format($p->harga, 2, ',', '.') }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">{{ $p->satuan }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">
                             @if($p->tanggal_kadaluarsa instanceof \Carbon\Carbon)
                                 {{ $p->tanggal_kadaluarsa->format('Y-m-d') }}
                             @else
                                 {{ $p->tanggal_kadaluarsa }}
                             @endif
                         </td>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">
-                            <span class="px-2 py-1 rounded shadow"
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">
+                            <span class="px-1 py-0.5 text-xs rounded shadow"
                                 style="
                                     @if($p->status_kedaluarsa == 'aman') background-color: #d4edda; color: #155724;
                                     @elseif($p->status_kedaluarsa == 'mendekati') background-color: #fff3cd; color: #856404;
@@ -76,8 +76,8 @@
                                 {{ ucfirst($p->status_kedaluarsa) }}
                             </span>
                         </td>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-center border-r border-gray-300">
-                            <span class="px-2 py-1 rounded shadow"
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">
+                            <span class="px-1 py-0.5 text-xs rounded shadow"
                                 style="
                                     @if($p->status_tersedia == 'tersedia') background-color: #d4edda; color: #155724;
                                     @elseif($p->status_tersedia == 'menipis') background-color: #fff3cd; color: #856404;
@@ -86,7 +86,7 @@
                                 {{ ucfirst($p->status_tersedia) }}
                             </span>
                         </td>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center">
+                        <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center">
                             <button class="bg-yellow-400 text-white px-2 py-1 rounded-lg hover:bg-yellow-500 transition duration-300" 
                                     onclick="openEditModal(this)" 
                                     data-id="{{ $p->id }}"
