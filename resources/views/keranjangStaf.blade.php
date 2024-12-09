@@ -18,6 +18,7 @@
                             <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Jumlah</th>
                             <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Harga</th>
                             <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider">Total</th>
+                            <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
@@ -28,6 +29,13 @@
                             <td class="px-4 py-2 text-center text-xs text-gray-900 border-r border-gray-300">{{ $item->jumlah }}</td>
                             <td class="px-4 py-2 text-right text-xs text-gray-900 border-r border-gray-300">{{ number_format($item->harga, 2, ',', '.') }}</td>
                             <td class="px-4 py-2 text-right text-xs text-gray-900">{{ number_format($item->total, 2, ',', '.') }}</td>
+                            <td class="px-4 py-2 text-center text-xs text-gray-900">
+                                <form action="{{ route('keranjangStaf.delete', $item->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 transition duration-300">Hapus</button>
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -43,7 +51,10 @@
                     </tr>
                     <tr>
                         <td colspan="2" class="px-4 py-2 text-right">
-                            <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">Proses Pesanan</button>
+                            <form action="{{ route('keranjangStaf.proses') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-300">Proses Pesanan</button>
+                            </form>
                         </td>
                     </tr>
                 </table>

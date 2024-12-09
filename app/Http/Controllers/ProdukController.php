@@ -16,15 +16,16 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        $produk = Produk::all();
-
-        // Convert tanggal_kadaluarsa to Carbon instances
-        $produk->transform(function ($p) {
-            $p->tanggal_kadaluarsa = Carbon::parse($p->tanggal_kadaluarsa);
-            return $p;
+        $produk = Produk::all()->map(function ($item) {
+            $item->tanggal_kadaluarsa = Carbon::parse($item->tanggal_kadaluarsa);
+            return $item;
         });
 
-        return view('inventori', ['produk' => $produk]);
+        $tersedia = $produk->where('status_tersedia', 'tersedia')->count();
+        $menipis = $produk->where('status_tersedia', 'menipis')->count();
+        $tidakTersedia = $produk->where('status_tersedia', 'tidak tersedia')->count();
+
+        return view('inventori', compact('tersedia', 'menipis', 'tidakTersedia', 'produk'));
     }
 
     /**

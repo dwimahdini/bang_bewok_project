@@ -64,7 +64,7 @@
           <li>
             <a href="/keranjangStaf">
               <i class='bx bx-basket'></i>
-              <span class="link-name">Keranjang Ku</span>
+              <span class="link-name">Keranjang</span>
             </a>
           </li>
           <li>

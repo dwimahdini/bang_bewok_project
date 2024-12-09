@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Produk;
 use App\Models\Pesanan;
+use App\Models\PesananMasuk;
+use Illuminate\Support\Facades\DB;
 
 class KeranjangController extends Controller
 {
@@ -53,5 +55,40 @@ class KeranjangController extends Controller
         $pesanan = Pesanan::with('produk')->get();
 
         return view('keranjangStaf', compact('pesanan'));
+    }
+
+    public function deleteFromCart($id)
+    {
+        DB::transaction(function () use ($id) {
+            $pesanan = Pesanan::findOrFail($id);
+            $produk = $pesanan->produk;
+
+            $produk->jumlah += $pesanan->jumlah;
+            $produk->save();
+
+            $pesanan->delete();
+        });
+
+        return redirect()->route('keranjangStaf.view')->with('success', 'Produk berhasil dihapus dari keranjang dan stok diperbarui!');
+    }
+
+    public function prosesPesanan()
+    {
+        $pesanan = Pesanan::with('produk')->get();
+
+        foreach ($pesanan as $item) {
+            PesananMasuk::create([
+                'produk_id' => $item->produk_id,
+                'jumlah' => $item->jumlah,
+                'harga' => $item->harga,
+                'total' => $item->total,
+            ]);
+        }
+
+        // Hapus semua pesanan saat ini
+        Pesanan::truncate();
+
+        // Redirect ke halaman pesananMasuk.view
+        return redirect()->route('pesananMasuk.view')->with('success', 'Pesanan berhasil diproses!');
     }
 } 

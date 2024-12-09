@@ -8,16 +8,6 @@
     <div id="frameProduk" class="bg-white p-4 rounded-lg shadow-sm">
         <h1 class="text-2xl font-bold mb-4">Daftar Produk</h1>
 
-        <!-- Tampilkan data ketersediaan produk -->
-        <div class="mb-4">
-            <h2 class="text-lg font-semibold">Status Ketersediaan Produk</h2>
-            <ul class="list-disc pl-5">
-                <li>Tersedia: {{ $tersedia }}</li>
-                <li>Menipis: {{ $menipis }}</li>
-                <li>Tidak Tersedia: {{ $tidakTersedia }}</li>
-            </ul>
-        </div>
-
         <!-- Fitur Sort, Search, Tambah -->
         <div class="flex flex-col md:flex-row md:items-center gap-2 mb-4">
             <select id="sortCriteria" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300" onchange="sortTable()">
@@ -69,7 +59,13 @@
                         <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">{{ $p->jumlah }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-right border-r border-gray-300">{{ number_format($p->harga, 2, ',', '.') }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">{{ $p->satuan }}</td>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">{{ $p->tanggal_kadaluarsa->format('Y-m-d') }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">
+                            @if($p->tanggal_kadaluarsa instanceof \Carbon\Carbon)
+                                {{ $p->tanggal_kadaluarsa->format('Y-m-d') }}
+                            @else
+                                {{ $p->tanggal_kadaluarsa }}
+                            @endif
+                        </td>
                         <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900 text-center border-r border-gray-300">
                             <span class="px-2 py-1 rounded shadow"
                                 style="
