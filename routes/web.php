@@ -21,6 +21,7 @@ Route::post('/produk/store', [ProdukController::class, 'store'])->name('produk.s
 Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update');
 // Route menghapus produk
 Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+Route::get('/inventori', [ProdukController::class, 'index'])->name('inventori');
 
 
 // ROUTE UNTUK STAFF

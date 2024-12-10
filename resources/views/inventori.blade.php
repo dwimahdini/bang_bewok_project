@@ -36,7 +36,7 @@
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Gambar</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Nama Produk</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Jumlah</th>
-                        <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Harga</th>
+                        <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Harga (Rp)</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Satuan/Berat</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Tanggal kedaluarsa</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Status kedaluarsa</th>
@@ -50,7 +50,7 @@
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">{{ $loop->iteration }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">
                             @if($p->gambar)
-                                <img src="{{ asset('storage/' . $p->gambar) }}" alt="Gambar Produk" class="w-10 h-10 object-cover rounded-full">
+                                <img src="{{ asset('storage/images/' . $p->gambar) }}" alt="Gambar Produk" class="w-24 h-24 object-cover rounded-lg mb-2">
                             @else
                                 <img src="https://via.placeholder.com/50" alt="Gambar Produk" class="w-10 h-10 object-cover rounded-full">
                             @endif
@@ -97,12 +97,10 @@
                                     data-tanggal="{{ $p->tanggal_kadaluarsa->format('Y-m-d') }}">
                                 Edit
                             </button>
-                            <form action="{{ route('produk.destroy', $p->id) }}" method="POST" class="inline-block">
+                            <form action="{{ route('produk.destroy', $p->id) }}" method="POST" class="inline-block" data-id="{{ $p->id }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" 
-                                        class="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition duration-300" 
-                                        onclick="return confirm('Yakin ingin menghapus produk ini?')">
+                                <button type="button" onclick="openDeleteModal({{ $p->id }})" class="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition duration-300">
                                     Hapus
                                 </button>
                             </form>
@@ -152,7 +150,7 @@
                     </div>
                     <div>
                         <label for="jumlahProduk" class="block text-sm font-medium mb-1">Jumlah</label>
-                        <input type="number" id="jumlahProduk" name="jumlah" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required min="1" autocomplete="off">
+                        <input type="number" id="jumlahProduk" name="jumlah" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required min="0" autocomplete="off">
                     </div>
                     <div>
                         <label for="hargaProduk" class="block text-sm font-medium mb-1">Harga</label>
@@ -168,8 +166,8 @@
                     </div>
                 </div>
                 <div class="flex justify-end mt-4">
-                    <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-300 mr-2">Batal</button>
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Simpan</button>
+                    <button type="button" onclick="closeModal()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-300 mr-2">Batal</button>
+                    <button type="submit" class="bg-[#5D5108] text-white px-4 py-2 rounded-lg hover:bg-[#C3AB12] transition duration-300">Simpan</button>
                 </div>
             </form>
         </div>
@@ -178,13 +176,13 @@
 
 <!-- Edit Modal -->
 <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden" tabindex="-1" aria-hidden="true">
-    <div class="bg-white rounded-lg p-6 w-full max-w-4xl flex flex-col md:flex-row">
+    <div class="bg-white rounded-lg p-4 w-full max-w-2xl flex flex-col shadow-lg transition-transform transform scale-95 hover:scale-100">
         <!-- Bagian Kiri: Preview Gambar -->
-        <div class="flex-1 mb-4 md:mb-0 md:mr-4 relative">
-            <h2 class="text-xl font-semibold mb-4 mt-2">Edit Produk</h2>
+        <div class="flex-1 mb-4 relative">
+            <h2 class="text-lg font-semibold mb-2 text-center">Edit Produk</h2>
             <div 
                 id="editGambarProdukContainer" 
-                class="border border-gray-300 rounded-lg px-4 py-2 flex justify-center items-center h-48"
+                class="border border-gray-300 rounded-lg px-4 py-2 flex justify-center items-center h-32 bg-gray-50 hover:bg-gray-100 transition duration-300 cursor-pointer"
                 ondragover="allowDrop(event)"
                 ondrop="dropImage(event)"
                 onclick="document.getElementById('editGambarProduk').click()"
@@ -197,7 +195,7 @@
                     onchange="previewImage()"
                 >
                 <p id="editDropText" class="text-gray-500">Drag & Drop Gambar di sini atau klik untuk memilih</p>
-                <img id="editImagePreview" class="mt-2 hidden max-w-full h-auto absolute top-0 left-0 object-contain" alt="Pratinjau Gambar">
+                <img id="editImagePreview" class="mt-2 hidden max-w-full h-auto object-contain" alt="Pratinjau Gambar">
             </div>
         </div>
 
@@ -206,33 +204,45 @@
             <form id="editForm" action="#" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4">
                     <div>
-                        <label for="editNamaProduk" class="block text-sm font-medium mb-2">Nama Produk</label>
-                        <input type="text" id="editNamaProduk" name="nama_produk" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required>
+                        <label for="editNamaProduk" class="block text-sm font-medium mb-1">Nama Produk</label>
+                        <input type="text" id="editNamaProduk" name="nama_produk" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required>
                     </div>
                     <div>
-                        <label for="editJumlahProduk" class="block text-sm font-medium mb-2">Jumlah</label>
-                        <input type="number" id="editJumlahProduk" name="jumlah" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required min="1">
+                        <label for="editJumlahProduk" class="block text-sm font-medium mb-1">Jumlah</label>
+                        <input type="number" id="editJumlahProduk" name="jumlah" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required min="0">
                     </div>
                     <div>
-                        <label for="editHargaProduk" class="block text-sm font-medium mb-2">Harga</label>
-                        <input type="number" id="editHargaProduk" name="harga" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required min="0.01" step="0.01">
+                        <label for="editHargaProduk" class="block text-sm font-medium mb-1">Harga</label>
+                        <input type="number" id="editHargaProduk" name="harga" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required min="0.01" step="0.01">
                     </div>
                     <div>
-                        <label for="editSatuanProduk" class="block text-sm font-medium mb-2">Satuan/Berat</label>
-                        <input type="text" id="editSatuanProduk" name="satuan" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required>
+                        <label for="editSatuanProduk" class="block text-sm font-medium mb-1">Satuan/Berat</label>
+                        <input type="text" id="editSatuanProduk" name="satuan" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required>
                     </div>
                     <div>
-                        <label for="editKadaluarsaProduk" class="block text-sm font-medium mb-2">Tanggal Kadaluarsa</label>
-                        <input type="date" id="editKadaluarsaProduk" name="tanggal_kadaluarsa" class="w-full border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none transition duration-300" required>
+                        <label for="editKadaluarsaProduk" class="block text-sm font-medium mb-1">Tanggal Kadaluarsa</label>
+                        <input type="date" id="editKadaluarsaProduk" name="tanggal_kadaluarsa" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none transition duration-300" required>
                     </div>
                 </div>
                 <div class="flex justify-end mt-4">
-                    <button type="button" onclick="closeEditModal()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300 mr-2">Batal</button>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Simpan</button>
+                    <button type="button" onclick="closeEditModal()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-300 mr-2">Batal</button>
+                    <button type="submit" class="bg-[#5D5108] text-white px-4 py-2 rounded-lg hover:bg-[#C3AB12] transition duration-300">Simpan</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden" tabindex="-1" aria-hidden="true">
+    <div class="bg-white rounded-lg p-4 w-full max-w-md flex flex-col">
+        <h2 class="text-lg font-semibold mb-4 text-center">Konfirmasi Hapus</h2>
+        <p class="text-center">Apakah Anda yakin ingin menghapus produk ini?</p>
+        <div class="flex justify-end mt-4">
+            <button type="button" onclick="closeDeleteModal()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-300 mr-2">Batal</button>
+            <button id="confirmDeleteButton" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300">Hapus</button>
         </div>
     </div>
 </div>
@@ -362,5 +372,35 @@
     // Close edit modal
     function closeEditModal() {
         document.getElementById("editModal").classList.add("hidden");
+    }
+
+    let deleteProductId;
+
+    function openDeleteModal(productId) {
+        deleteProductId = productId; // Simpan ID produk yang akan dihapus
+        document.getElementById("deleteModal").classList.remove("hidden");
+    }
+
+    function closeDeleteModal() {
+        document.getElementById("deleteModal").classList.add("hidden");
+    }
+
+    window.onload = function() {
+        document.getElementById("confirmDeleteButton").addEventListener("click", function() {
+            const form = document.querySelector(`form[data-id='${deleteProductId}']`);
+            if (form) {
+                form.submit(); // Kirim formulir untuk menghapus produk
+            }
+            closeDeleteModal(); // Tutup modal
+        });
+    };
+
+    function validateForm() {
+        const jumlah = document.getElementById('editJumlahProduk').value;
+        if (jumlah < 0) {
+            alert('Jumlah tidak boleh kurang dari 0');
+            return false;
+        }
+        return true;
     }
 </script>

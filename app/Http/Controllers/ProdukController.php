@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use App\Models\Produk;
@@ -7,12 +8,13 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
+
 class ProdukController extends Controller
 {
     /**
      * Display a list of products
      * 
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View    
      */
     public function index()
     {
@@ -36,46 +38,25 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'nama_produk'       => 'required|string|max:255',
-            'jumlah'            => 'required|integer|min:0',
-            'harga'             => 'required|numeric|min:0.01',
-            'satuan'            => 'required|string|max:255',
-            'tanggal_kadaluarsa'=> 'required|date|after:today',
-            'gambar'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        $request->validate([
+            'nama_produk' => 'required|string|max:255',
+            'jumlah' => 'required|integer|min:0',
+            'harga' => 'required|numeric|min:0',
+            'satuan' => 'required|string|max:50',
+            'tanggal_kadaluarsa' => 'required|date',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         try {
             $produk = new Produk();
-            $produk->fill($validatedData);
+            $produk->fill($request->all());
 
-            // Determine expiration status
-            $tanggalKadaluarsa = Carbon::parse($validatedData['tanggal_kadaluarsa']);
-            $hariIni = Carbon::now();
-
-            if ($hariIni->greaterThanOrEqualTo($tanggalKadaluarsa)) {
-                $produk->status_kedaluarsa = 'kedaluarsa';
-            } elseif ($hariIni->diffInDays($tanggalKadaluarsa) <= 7) {
-                $produk->status_kedaluarsa = 'mendekati';
-            } else {
-                $produk->status_kedaluarsa = 'aman';
-            }
-
-            // Determine availability status
-            if ($validatedData['jumlah'] == 0) {
-                $produk->status_tersedia = 'tidak_tersedia';
-            } elseif ($validatedData['jumlah'] <= 5) {
-                $produk->status_tersedia = 'menipis';
-            } else {
-                $produk->status_tersedia = 'tersedia';
-            }
-
-            // Handle image upload
+            // Logika penyimpanan gambar
             if ($request->hasFile('gambar')) {
                 $file = $request->file('gambar');
                 $fileName = time() . '_' . $file->getClientOriginalName();
-                $filePath = $file->storeAs('produk', $fileName, 'public');
-                $produk->gambar = $filePath;
+                $filePath = $file->storeAs('public/images', $fileName);
+                $produk->gambar = 'images/' . $fileName;
             }
 
             $produk->save();
@@ -93,12 +74,40 @@ class ProdukController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        // Validasi dan update produk
-        $produk = Produk::findOrFail($id);
-        $produk->update($request->all());
+{
+    $request->validate([
+        'nama_produk' => 'required|string|max:255',
+        'jumlah' => 'required|integer|min:0',
+        'harga' => 'required|numeric|min:0',
+        'satuan' => 'required|string|max:50',
+        'tanggal_kadaluarsa' => 'required|date',
+        'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
+    $produk = Produk::findOrFail($id);
+
+    if ($request->hasFile('gambar')) {
+    if ($produk->gambar && Storage::disk('public')->exists($produk->gambar)) {
+        Storage::disk('public')->delete($produk->gambar);
+    }
+
+    // Simpan gambar baru
+    $file = $request->file('gambar');
+    $fileName = time() . '_' . $file->getClientOriginalName();
+    $filePath = $file->storeAs('images', $fileName, 'public');
+    $produk->gambar = $filePath;
+}
+
+
+    // Update data produk
+    $produk->update($request->except('gambar'));
+    
+    // Simpan gambar jika ada
+    if (isset($fileName)) {
+        $produk->save();
+    }
+
+    return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
     }
 
     /**
