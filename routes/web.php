@@ -11,6 +11,8 @@ use App\Http\Controllers\PenggunaAkunController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PesananMasukController;
 
+// ROUTE UNTUK INVENTORI
+Route::get('/inventori', [ProdukController::class, 'index'])->name('inventori');
 // Route untuk mengambil produk di database lalu ditampilkan
 Route::get('/inventori', [ProdukController::class, 'index'])->name('produk.index');
 // Route untuk menyimpan produk ke database
@@ -36,6 +38,8 @@ Route::post('/cabangs', [CabangController::class, 'store'])->name('cabangs.store
 // ROUTE UNTUK PESANAN MASUK
 Route::get('/pesananMasuk', [PesanController::class, 'index'])->name('pesananMasuk.view');
 Route::get('/pesananMasuk', [PesananMasukController::class, 'index'])->name('pesananMasuk.view');
+Route::get('/pesananMasuk', function () { return view('pesananMasuk');});
+Route::get('/pesan', [PesanController::class, 'index'])->name('pesan.index');   
 
 // ROUTE UNTUK TABLE MENAMPUNG AKUN
 Route::get('/penggunaakun', [PenggunaAkunController::class, 'index'])->name('penggunaakun.index');
@@ -48,12 +52,11 @@ Route::delete('/keranjangStaf/{id}', [KeranjangController::class, 'deleteFromCar
 Route::post('/keranjangStaf/proses', [KeranjangController::class, 'prosesPesanan'])->name('keranjangStaf.proses');
 Route::post('/keranjangStaf', [KeranjangController::class, 'addToCart'])->name('keranjangStaf');
 
+// ROUTE UNTUK LANDING PAGE
 Route::get('/', function () { return view('welcome');});
 
-Route::get('/pesananMasuk', function () { return view('pesananMasuk');});
-
-Route::get('/pesan', [PesanController::class, 'index'])->name('pesan.index');   
-
-Route::get('/beranda', function () { return view('beranda');});
+// ROUTE UNTUK BERANDA
+Route::get('/beranda', [ProdukController::class, 'beranda'])->name('beranda');
+Route::get('/berandaStaf', function () { return view('berandaStaf');});
 
 Route::get('/login', [LoginController::class, 'showLoginForm']);

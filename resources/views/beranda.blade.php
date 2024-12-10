@@ -3,25 +3,28 @@
 
 @section('content')
 <div class="p-4">
-    <h1 class="text-2xl font-bold mb-4">Status Produk</h1>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <!-- Available Products Card -->
-        <div class="bg-green-500 text-white p-8 rounded-lg shadow-md text-center">
-            <img src="path/to/available-icon.png" alt="Available" class="mx-auto mb-4 w-12 h-12">
-            <p class="text-xl font-semibold mt-2">TERSEDIA</p>
-        </div>
-
-        <!-- Running Low Products Card -->
-        <div class="bg-yellow-500 text-white p-8 rounded-lg shadow-md text-center">
-            <img src="path/to/running-low-icon.png" alt="Running Low" class="mx-auto mb-4 w-12 h-12">
-            <p class="text-xl font-semibold mt-2">MENIPIS</p>
-        </div>
-
-        <!-- Unavailable Products Card -->
-        <div class="bg-red-500 text-white p-8 rounded-lg shadow-md text-center">
-            <img src="path/to/unavailable-icon.png" alt="Unavailable" class="mx-auto mb-4 w-12 h-12">
-            <p class="text-xl font-semibold mt-2">TIDAK TERSEDIA</p>
-        </div>
+        <a href="{{ route('inventori') }}" class="bg-green-300 p-4 rounded-lg shadow-md text-center hover:bg-green-400 transition duration-300">
+            <h2 class="text-4xl">{{ $produkTersedia }}</h2>
+            <p class="text-gray-800">Produk Tersedia</p>
+        </a>
+        <a href="{{ route('inventori') }}" class="bg-yellow-300 p-4 rounded-lg shadow-md text-center hover:bg-yellow-400 transition duration-300">
+            <h2 class="text-4xl">{{ $produkMenipis }}</h2>
+            <p class="text-gray-800">Produk Menipis</p>
+        </a>
+        <a href="{{ route('inventori') }}" class="bg-red-300 p-4 rounded-lg shadow-md text-center hover:bg-red-400 transition duration-300">
+            <h2 class="text-4xl">{{ $produkTidakTersedia }}</h2>
+            <p class="text-gray-800">Produk Tidak Tersedia</p>
+        </a>
     </div>
 </div>
+
+<style>
+    /* Menggunakan font Inter */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+</style>
 @endsection
