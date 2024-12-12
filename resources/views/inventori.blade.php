@@ -30,6 +30,14 @@
     @endif
     </div>
 
+    <div class="container mx-auto mt-4">
+        <!-- Notifikasi jika ada produk yang mendekati kadaluarsa -->
+        @if($produkMenipisKadaluarsa->isNotEmpty())
+            <div class="alert alert-warning bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4">
+                <strong>Perhatian!</strong> Terdapat {{ $produkMenipisKadaluarsa->count() }} produk yang mendekati kadaluarsa dalam 30 hari.
+            </div>
+        @endif
+
         <!-- Tabel Produk -->
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200 bg-white shadow-md rounded-lg border border-gray-300">
@@ -122,6 +130,7 @@
             </table>
         </div>
     </div>
+</div>
 </div>
 
 <!-- Modal -->

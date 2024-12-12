@@ -11,7 +11,6 @@ use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PenggunaAkunController;
 use App\Http\Controllers\PesananMasukController;
-use Illuminate\Container\Attributes\Auth;
 
 // ROUTE UNTUK INVENTORI
 Route::get('/inventori', [ProdukController::class, 'index'])->name('inventori')->middleware('auth');
@@ -24,6 +23,9 @@ Route::put('/produk/{id}', [ProdukController::class, 'update'])->name('produk.up
 // Route menghapus produk
 Route::delete('/produk/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy')->middleware('auth');
 Route::get('/inventori', [ProdukController::class, 'index'])->name('inventori')->middleware('auth');
+
+Route::get('/inventori', [ProdukController::class, 'index'])->name('inventori')->middleware('auth');
+
 
 
 // ROUTE UNTUK STAFF
@@ -67,7 +69,6 @@ Route::get('/berandaStaf', function () { return view('berandaStaf');})->middlewa
 Route::get('/login', [LoginController::class, 'showLoginForm']);
 Route::post('/login', [LoginController::class, 'autentic']);
 Route::get('/login', function () { return view('login');});
-
 
 //laporan
 Route::get('/laporan', [LaporanController::class,'index']);

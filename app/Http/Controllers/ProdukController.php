@@ -18,23 +18,30 @@ class ProdukController extends Controller
      * @return \Illuminate\View\View    
      */
     public function index()
-{
-    // Periksa apakah role pengguna adalah 'admin' atau 'manajer'
-    if (Auth::user()->role != 'admin' && Auth::user()->role != 'manajer') {
-        abort(404); // Tampilkan halaman 404 jika role tidak sesuai
+    {
+        // Periksa apakah role pengguna adalah 'admin' atau 'manajer'
+        if (Auth::user()->role != 'admin' && Auth::user()->role != 'manajer') {
+            abort(404); // Tampilkan halaman 404 jika role tidak sesuai
+        }
+    
+        $produk = Produk::all()->map(function ($item) {
+            $item->tanggal_kadaluarsa = Carbon::parse($item->tanggal_kadaluarsa);
+            return $item;
+        });
+    
+        // Hitung produk yang mendekati kadaluwarsa (misalnya dalam 30 hari)
+        $produkMenipisKadaluarsa = $produk->filter(function ($item) {
+            return $item->tanggal_kadaluarsa->diffInDays(Carbon::now()) <= 30;
+        });
+    
+        // Hitung kategori produk yang tersedia
+        $tersedia = $produk->where('status_tersedia', 'tersedia')->count();
+        $menipis = $produk->where('status_tersedia', 'menipis')->count();
+        $tidakTersedia = $produk->where('status_tersedia', 'tidak tersedia')->count();
+    
+        return view('inventori', compact('tersedia', 'menipis', 'tidakTersedia', 'produk', 'produkMenipisKadaluarsa'));
     }
-
-    $produk = Produk::all()->map(function ($item) {
-        $item->tanggal_kadaluarsa = Carbon::parse($item->tanggal_kadaluarsa);
-        return $item;
-    });
-
-    $tersedia = $produk->where('status_tersedia', 'tersedia')->count();
-    $menipis = $produk->where('status_tersedia', 'menipis')->count();
-    $tidakTersedia = $produk->where('status_tersedia', 'tidak tersedia')->count();
-
-    return view('inventori', compact('tersedia', 'menipis', 'tidakTersedia', 'produk'));
-}
+    
 
 
 
