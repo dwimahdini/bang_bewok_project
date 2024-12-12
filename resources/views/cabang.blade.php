@@ -7,9 +7,7 @@
 <div class="flex flex-wrap gap-4">
     @foreach($cabangs as $cabang)
     <div class="max-w-xs border border-gray-200 rounded-lg shadow" style="background-color: white; width: 200px;">
-        <a href="#">
-            <img class="rounded-t-lg" src="{{ asset($cabang->image_path) }}" alt="{{ $cabang->nama }}" style="height: 100px; width: 100%;" />
-        </a>
+        <img class="rounded-t-lg" src="{{ asset('storage/' . $cabang->image_path) }}" alt="{{ $cabang->nama }}" style="height: 100px; width: 100%;" />
         <div class="p-2">
             <a href="#">
                 <h5 class="mb-1 text-lg font-bold tracking-tight text-black">{{ $cabang->nama }}</h5>
@@ -44,7 +42,6 @@
                 <h3 id="modalBranchName" class="text-lg font-semibold"></h3>
             </div>
             <div class="p-4">
-                <img id="modalBranchImage" class="rounded-lg mb-4" src="" alt="" style="width: 100%; height: auto;" />
                 <p id="modalBranchAddress" class="mb-2 text-sm font-normal text-black"></p>
                 <p id="modalBranchPostalCode" class="mb-2 text-sm font-normal text-black"></p>
                 <p id="modalBranchCity" class="mb-2 text-sm font-normal text-black"></p>

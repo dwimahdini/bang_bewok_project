@@ -29,8 +29,8 @@
             <img src="img/logo_bang_bewok.png" alt="Logo" class="w-12 mx-auto mb-5 rounded-full">
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">LOGIN</h2>
             <p class="text-center text-gray-500 mb-6">Silahkan Login</p>
-            <form method="POST" action="#">
-                <!-- @csrf -->
+            <form method="POST" action="{{ url('login') }}">
+                @csrf
                 <div class="mb-4">
                     <label for="email" class="block text-gray-700 text-sm mb-2">Email</label>
                     <input type="email" name="email" id="email" placeholder="Masukkan Email Anda" autocomplete="off"
@@ -43,13 +43,12 @@
                     <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password absolute right-3 top-9 cursor-pointer"></span>
                     <a href="#" class="text-blue-500 hover:underline absolute right-0 mt-2">Lupa Password</a>
                 </div>
-                <div class="flex justify-between items-center w-3/4 mx-auto mb-6 text-sm text-gray-600">
-                </div>
                 <button type="submit" 
                     class="w-3/4 mx-auto block px-4 py-2 bg-black text-white rounded-md text-center hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-400">
                     Login
                 </button>
             </form>
+            
             
             <div class="text-center mt-4 text-sm">
                 Belum Memiliki Akun? <a href="#" class="text-blue-500 hover:underline">Hubungi Admin</a>

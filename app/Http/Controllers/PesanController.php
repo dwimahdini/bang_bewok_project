@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Produk;
-use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\Models\Produk;
 use App\Models\Pesanan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PesanController extends Controller
 {
@@ -16,6 +17,9 @@ class PesanController extends Controller
      */
     public function index()
     {
+        if (Auth::user()->role != 'staf') {
+            abort(404); // Tampilkan halaman 404 jika role tidak sesuai
+        }
         $produk = Produk::all();
 
         // Convert tanggal_kadaluarsa to Carbon instances

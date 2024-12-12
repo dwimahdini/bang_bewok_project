@@ -23,4 +23,6 @@ class Produk extends Model
     ];
 
     protected $dates = ['tanggal_kadaluarsa'];
+
+    
 }

@@ -11,8 +11,8 @@ class StaffController extends Controller
     
     public function index()
 {
-    if (Auth::check() && Auth::user()->role !== 'admin') {
-        return redirect('/')->with('error', 'Akses ditolak, hanya admin yang bisa mengakses halaman ini');
+    if (Auth::user()->role != 'admin') {
+        abort(404);
     }
 
     $staffs = Staff::all();

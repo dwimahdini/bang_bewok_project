@@ -23,7 +23,7 @@
             <div class="bg-gray-50 rounded-lg shadow-md p-2 hover:shadow-lg transition duration-300 border border-gray-300">
                 <div class="flex flex-col items-center">
                     @if($p->gambar)
-                        <img src="{{ asset('storage/' . $p->gambar) }}" alt="Gambar Produk" class="w-24 h-24 object-cover rounded-lg mb-2">
+                        <img src="{{ asset('img/' . $p->gambar) }}" alt="Gambar Produk" class="w-24 h-24 object-cover rounded-lg mb-2">
                     @else
                         <img src="https://via.placeholder.com/150" alt="Gambar Produk" class="w-24 h-24 object-cover rounded-lg mb-2">
                     @endif

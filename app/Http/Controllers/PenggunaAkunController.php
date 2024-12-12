@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\PenggunaAkun;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PenggunaAkunController extends Controller
 {
     public function index()
     {
+            // Periksa apakah role pengguna adalah 'admin' atau 'manajer'
+    if (Auth::user()->role != 'admin') {
+        abort(404); // Tampilkan halaman 404 jika role tidak sesuai
+    }
         $penggunaakuns = PenggunaAkun::all();
         return view('penggunaakun', compact('penggunaakuns'));
     }

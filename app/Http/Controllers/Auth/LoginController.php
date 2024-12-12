@@ -15,32 +15,39 @@ class LoginController extends Controller
     }
 
     // Proses login
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+    public function autentic(Request $request)
+{
+    // Validasi input
+    $credentials = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required', 'string'],
+    ]);
 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+    // Cek kredensial dan login
+    if (Auth::attempt($credentials)) {
+        $request->session()->regenerate();
 
-            // Redirect berdasarkan role pengguna
-            switch (Auth::user()->role) {
-                case 'admin':
-                    return redirect()->route('admin.beranda');
-                case 'staf':
-                    return redirect()->route('staf.beranda');
-                case 'manajer':
-                    return redirect()->route('manajer.beranda');
-                default:
-                    Auth::logout(); // Logout jika role tidak valid
-                    return back()->withErrors(['email' => 'Role tidak valid.']);
-            }
+        // Ambil pengguna yang sedang login
+        $user = Auth::user();
+
+        // Redirect berdasarkan peran
+        if ($user->role === 'staf') {
+            return redirect()->intended('/berandaStaf'); // Rute untuk staf
+        } elseif ($user->role === 'manajer') {
+            return redirect()->intended('/berandaStaf'); // Rute untuk manajer
         }
 
-        return back()->withErrors(['email' => 'Email atau password salah.']);
+        // Rute default jika peran tidak dikenali
+        return redirect()->intended('/beranda'); 
     }
+
+    // Jika login gagal, redirect kembali ke halaman login dengan pesan kesalahan
+    return redirect()->back()->withErrors([
+        'email' => 'Email atau password salah.',
+    ])->withInput();
+}
+
+    
 
     // Logout
     public function logout(Request $request)

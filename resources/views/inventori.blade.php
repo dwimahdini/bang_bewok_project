@@ -22,9 +22,13 @@
                 onkeyup="searchTable()" 
                 placeholder="Cari Produk" 
                 class="flex-grow border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300">
-            <button onclick="openModal()" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300" style="background-color: #5D5108; color: white;" onmouseover="this.style.backgroundColor='#C3AB12'" onmouseout="this.style.backgroundColor='#5D5108'">
-                Tambah Produk
-            </button>
+
+                @if(Auth::user()->role === 'admin') <!-- Pemeriksaan peran admin -->
+                <button onclick="openModal()" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300" style="background-color: #5D5108; color: white;" onmouseover="this.style.backgroundColor='#C3AB12'" onmouseout="this.style.backgroundColor='#5D5108'">
+                    Tambah Produk
+                </button>
+            @endif
+            
         </div>
 
         <!-- Tabel Produk -->
@@ -41,7 +45,9 @@
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Tanggal kedaluarsa</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Status kedaluarsa</th>
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider border-r border-gray-300">Status Ketersediaan</th>
+                        @if(Auth::user()->role === 'admin')
                         <th class="px-4 py-2 text-center text-xs font-medium text-white uppercase tracking-wider">Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody id="productTable" class="bg-white divide-y divide-gray-200">
@@ -50,7 +56,7 @@
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">{{ $loop->iteration }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center border-r border-gray-300">
                             @if($p->gambar)
-                                <img src="{{ asset('storage/images/' . $p->gambar) }}" alt="Gambar Produk" class="w-24 h-24 object-cover rounded-lg mb-2">
+                                <img src="{{ asset('img/' . $p->gambar) }}" alt="Gambar Produk" class="w-24 h-24 object-cover rounded-lg mb-2">
                             @else
                                 <img src="https://via.placeholder.com/50" alt="Gambar Produk" class="w-10 h-10 object-cover rounded-full">
                             @endif
@@ -86,6 +92,8 @@
                                 {{ ucfirst($p->status_tersedia) }}
                             </span>
                         </td>
+
+                        @if(Auth::user()->role === 'admin')
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-900 text-center">
                             <button class="bg-yellow-400 text-white px-2 py-1 rounded-lg hover:bg-yellow-500 transition duration-300" 
                                     onclick="openEditModal(this)" 
@@ -97,12 +105,16 @@
                                     data-tanggal="{{ $p->tanggal_kadaluarsa->format('Y-m-d') }}">
                                 Edit
                             </button>
+                            @endif
+
+                            @if(Auth::user()->role === 'admin')
                             <form action="{{ route('produk.destroy', $p->id) }}" method="POST" class="inline-block" data-id="{{ $p->id }}">
                                 @csrf
                                 @method('DELETE')
                                 <button type="button" onclick="openDeleteModal({{ $p->id }})" class="bg-red-500 text-white px-2 py-1 rounded-lg hover:bg-red-600 transition duration-300">
                                     Hapus
                                 </button>
+                                @endif
                             </form>
                         </td>                    
                     </tr>                
@@ -115,34 +127,34 @@
 
 <!-- Modal -->
 <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden" tabindex="-1" aria-hidden="true">
-    <div class="bg-white rounded-lg p-4 w-full max-w-2xl flex flex-col shadow-lg transition-transform transform scale-95 hover:scale-100">
-        <!-- Bagian Kiri: Preview Gambar -->
-        <div class="flex-1 mb-4 relative">
-            <h2 class="text-lg font-semibold mb-2 text-center">Tambah Produk Baru</h2>
-            <div 
-                id="gambarProdukContainer" 
-                class="border border-gray-300 rounded-lg px-4 py-2 flex justify-center items-center h-32 bg-gray-50 hover:bg-gray-100 transition duration-300 cursor-pointer"
-                ondragover="allowDrop(event)"
-                ondrop="dropImage(event)"
-                onclick="document.getElementById('gambarProduk').click()"
-            >
-                <input 
-                    type="file" 
-                    id="gambarProduk" 
-                    name="gambar"
-                    accept="image/*" 
-                    class="hidden"
-                    onchange="previewImage()"
-                >
-                <p id="dropText" class="text-gray-500">Drag & Drop Gambar di sini atau klik untuk memilih</p>
-                <img id="imagePreview" class="mt-2 hidden max-w-full h-auto object-contain" alt="Pratinjau Gambar">
-            </div>
-        </div>
 
         <!-- Bagian Kanan: Formulir Input -->
         <div class="flex-1">
             <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                <div class="bg-white rounded-lg p-4 w-full max-w-2xl flex flex-col shadow-lg transition-transform transform scale-95 hover:scale-100">
+                    <!-- Bagian Kiri: Preview Gambar -->
+                    <div class="flex-1 mb-4 relative">
+                        <h2 class="text-lg font-semibold mb-2 text-center">Tambah Produk Baru</h2>
+                        <div 
+                            id="gambarProdukContainer" 
+                            class="border border-gray-300 rounded-lg px-4 py-2 flex justify-center items-center h-32 bg-gray-50 hover:bg-gray-100 transition duration-300 cursor-pointer"
+                            ondragover="allowDrop(event)"
+                            ondrop="dropImage(event)"
+                            onclick="document.getElementById('gambarProduk').click()"
+                        >
+                            <input 
+                                type="file" 
+                                id="gambarProduk" 
+                                name="gambar"
+                                accept="img/*" 
+                                class="hidden"
+                                onchange="previewImage()"
+                            >
+                            <p id="dropText" class="text-gray-500">Drag & Drop Gambar di sini atau klik untuk memilih</p>
+                            <img id="imagePreview" class="mt-2 hidden max-w-full h-auto object-contain" alt="Pratinjau Gambar">
+                        </div>
+                    </div>
                 <div class="grid grid-cols-1 gap-4">
                     <div>
                         <label for="namaProduk" class="block text-sm font-medium mb-1">Nama Produk</label>
@@ -173,6 +185,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Edit Modal -->
 <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden" tabindex="-1" aria-hidden="true">
