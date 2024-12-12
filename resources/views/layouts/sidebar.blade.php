@@ -112,11 +112,12 @@
           <i class="bx bx-menu text-2xl"></i>
         </button>
         <div class="flex items-center gap-4 mr-4">
-          <!-- Notifikasi -->
-          <button class="relative" id="notification-button">
-            <i class="bx bx-bell text-2xl text-gray-700"></i>
-            <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
-          </button>          
+        <!-- Tombol notifikasi -->
+        <button class="relative" id="notification-button">
+        <i class="bx bx-bell text-2xl text-gray-700"></i>
+        <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+        </button>
+      
           <!-- Profil pengguna -->
           <div class="flex items-center gap-2">
             <span class="text-gray-700 font-bold">{{ Auth::user()->name }}</span>
@@ -125,10 +126,11 @@
       </header>
 
       @if(isset($produkMenipisKadaluarsa) && $produkMenipisKadaluarsa->count() > 0)
-      <div id="notification-content" class="absolute top-14 right-28 w-96 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 shadow-xl rounded-lg">
+      <div id="notification-content" class="absolute top-14 right-28 w-96 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 shadow-xl rounded-lg hidden">
         <strong>Perhatian!</strong> Terdapat {{ $produkMenipisKadaluarsa->count() }} produk yang mendekati kadaluarsa dalam 30 hari.
         <button id="close-notification" class="text-sm text-gray-500 ml-2">Tutup</button>
-      </div>
+    </div>
+    
     @endif
     
 
@@ -169,16 +171,34 @@
       }
     });
 
+    document.addEventListener('DOMContentLoaded', function () {
+    // Mendapatkan elemen notifikasi dan tombol notifikasi
+    const notification = document.getElementById('notification-content');
+    const notificationButton = document.getElementById('notification-button');
+    const closeButton = document.getElementById('close-notification');
+    
+    // Memastikan notifikasi muncul otomatis setelah halaman dimuat jika ada produk mendekati kadaluarsa
+    if (notification) {
+        notification.classList.remove('hidden'); // Menampilkan notifikasi
+        // Menutup notifikasi setelah 5 detik
+        setTimeout(function() {
+            notification.classList.add('hidden'); // Menyembunyikan notifikasi setelah 5 detik
+        }, 2000);
+    }
 
-  document.getElementById('notification-button').addEventListener('click', function() {
-      const notification = document.getElementById('notification-content');
-      notification.classList.toggle('hidden');
-  });
+    // Fungsi untuk menampilkan atau menyembunyikan notifikasi saat tombol bel diklik
+    notificationButton.addEventListener('click', function() {
+        notification.classList.toggle('hidden'); // Menyembunyikan atau menampilkan notifikasi saat tombol bel diklik
+    });
 
-  document.getElementById('close-notification').addEventListener('click', function() {
-      const notification = document.getElementById('notification-content');
-      notification.classList.add('hidden');
-  });
+    // Menutup notifikasi jika tombol "Tutup" diklik
+    closeButton.addEventListener('click', function() {
+        notification.classList.add('hidden'); // Menyembunyikan notifikasi jika tombol "Tutup" diklik
+    });
+});
+
+
+
 
   </script>
 </body>
