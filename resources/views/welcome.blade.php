@@ -12,6 +12,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="icon" href="{{ asset('img/logo_bang_bewok.png') }}" type="image/png" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<link rel="icon" href="img/logo_bang_bewok.png" type="image/png" />
     @vite('resources/css/app.css')
 </head>
 
@@ -34,7 +35,7 @@
                 </button>
             </div>
             <nav :class="{ 'transform md:transform-none': !open, 'h-full': open }" class="h-0 md:h-auto flex flex-col flex-grow md:items-center pb-4 md:pb-0 md:flex md:justify-end md:flex-row origin-top duration-300 scale-y-0">
-                <a class="px-10 py-3 mt-2 text-sm text-center bg-[#edcf15] text-white rounded-full md:mt-8 md:ml-4" href="/beranda">Login</a>
+                <a class="px-10 py-3 mt-2 text-sm text-center bg-[#edcf15] text-white rounded-full md:mt-8 md:ml-4" href="/login">Login</a>
             </nav>
         </div>
     </div>

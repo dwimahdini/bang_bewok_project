@@ -10,7 +10,7 @@
 
         <!-- Fitur Sort, Search, Tambah -->
         <div class="flex flex-col md:flex-row md:items-center gap-2 mb-4">
-            <select id="sortCriteria" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300" onchange="sortTable()">
+            <select id="sortCriteria" class="border border-gray-300 px-5 py-2 text-sm rounded-lg focus:outline-none transition duration-300" onchange="sortTable()">
                 <option value="" disabled selected>Urutkan</option>
                 <option value="nama">Nama</option>
                 <option value="posisi">Posisi</option>
@@ -20,8 +20,8 @@
                 id="searchInput" 
                 onkeyup="searchTable()" 
                 placeholder="Cari Staf" 
-                class="flex-grow border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300">
-            <button onclick="openAddStaffModal()" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300" style="background-color: #5D5108; color: white;" onmouseover="this.style.backgroundColor='#C3AB12'" onmouseout="this.style.backgroundColor='#5D5108'">
+                class="flex-grow border border-gray-300 px-5 py-2 text-sm rounded-lg focus:outline-none transition duration-300">
+            <button onclick="openAddStaffModal()" class="border border-gray-300 px-5 py-2 text-sm rounded-lg focus:outline-none transition duration-300" style="background-color: #5D5108; color: white;" onmouseover="this.style.backgroundColor='#C3AB12'" onmouseout="this.style.backgroundColor='#5D5108'">
                 Tambah Staf
             </button>
         </div>
@@ -113,7 +113,7 @@
             </div>
             <div class="flex justify-end">
                 <button type="button" onclick="closeAddStaffModal()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition duration-300 mr-2">Batal</button>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">Simpan</button>
+                <button type="submit" class="border border-gray-300 px-5 py-2 text-sm rounded-lg focus:outline-none transition duration-300" style="background-color: #5D5108; color: white;" onmouseover="this.style.backgroundColor='#C3AB12'" onmouseout="this.style.backgroundColor='#5D5108'">Simpan</button>
             </div>
         </form>
     </div>

@@ -29,14 +29,14 @@
         @if(Auth::user()->role === 'admin')
             <a href="/beranda" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
                 <i class="bx bx-home-alt text-xl ml-2 text-black"></i>
-                <span class="menu-text text-black">Beranda Admin</span>
+                <span class="menu-text text-black">Beranda</span>
             </a>
         @endif
 
         @if(Auth::user()->role != 'admin')
         <a href="/berandaStaf" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
             <i class="bx bx-home-alt text-xl ml-2 text-black"></i>
-            <span class="menu-text text-black">Beranda Staf</span>
+            <span class="menu-text text-black">Beranda</span>
         </a>
     @endif
     

@@ -10,26 +10,25 @@
 
         <!-- Fitur Sort, Search, Tambah -->
         <div class="flex flex-col md:flex-row md:items-center gap-2 mb-4">
-            <select id="sortCriteria" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300" onchange="sortTable()">
-                <option value="" disabled selected>Urutkan</option>
-                <option value="nama_produk">Abjad</option>
-                <option value="status_tersedia">Status Ketersediaan</option>
-                <option value="status_kedaluarsa">Status Kedaluarsa</option>
-            </select>
-            <input 
-                type="text" 
-                id="searchInput" 
-                onkeyup="searchTable()" 
-                placeholder="Cari Produk" 
-                class="flex-grow border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300">
+        <select id="sortCriteria" class="border border-gray-300 px-5 py-2 text-sm rounded-lg focus:outline-none transition duration-300" onchange="sortTable()">
+            <option value="" disabled selected>Urutkan</option>
+            <option value="nama_produk">Abjad</option>
+            <option value="status_tersedia">Status Ketersediaan</option>
+            <option value="status_kedaluarsa">Status Kedaluarsa</option>
+        </select>
+        <input 
+            type="text" 
+            id="searchInput" 
+            onkeyup="searchTable()" 
+        placeholder="Cari Produk" 
+        class="flex-grow border border-gray-300 px-5 py-2 text-sm rounded-lg focus:outline-none transition duration-300">
 
-                @if(Auth::user()->role === 'admin') <!-- Pemeriksaan peran admin -->
-                <button onclick="openModal()" class="border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300" style="background-color: #5D5108; color: white;" onmouseover="this.style.backgroundColor='#C3AB12'" onmouseout="this.style.backgroundColor='#5D5108'">
-                    Tambah Produk
-                </button>
-            @endif
-            
-        </div>
+        @if(Auth::user()->role === 'admin') <!-- Pemeriksaan peran admin -->
+        <button onclick="openModal()" class="border border-gray-300 px-5 py-2 text-sm rounded-lg focus:outline-none transition duration-300" style="background-color: #5D5108; color: white;" onmouseover="this.style.backgroundColor='#C3AB12'" onmouseout="this.style.backgroundColor='#5D5108'">
+            Tambah Produk
+        </button>
+    @endif
+    </div>
 
         <!-- Tabel Produk -->
         <div class="overflow-x-auto">
@@ -126,11 +125,10 @@
 </div>
 
 <!-- Modal -->
-<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden" tabindex="-1" aria-hidden="true">
-
-        <!-- Bagian Kanan: Formulir Input -->
-        <div class="flex-1">
-            <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
+<div id="modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto hidden" tabindex="-1" aria-hidden="true">
+    <div class="flex items-center justify-center min-h-screen p-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl mx-auto">
+            <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data" class="p-6">
                 @csrf
                 <div class="bg-white rounded-lg p-4 w-full max-w-2xl flex flex-col shadow-lg transition-transform transform scale-95 hover:scale-100">
                     <!-- Bagian Kiri: Preview Gambar -->
@@ -205,7 +203,7 @@
                     id="editGambarProduk" 
                     accept="image/*" 
                     class="hidden"
-                    onchange="previewImage()"
+                    onchange="previewEditImage()"
                 >
                 <p id="editDropText" class="text-gray-500">Drag & Drop Gambar di sini atau klik untuk memilih</p>
                 <img id="editImagePreview" class="mt-2 hidden max-w-full h-auto object-contain" alt="Pratinjau Gambar">
@@ -282,26 +280,33 @@
         }
     }
 
-    function previewImage() {
-        const fileInput = document.getElementById('gambarProduk');
-        const file = fileInput.files[0];
-
-        if (file && file.type.startsWith('image/')) {
-            displayImagePreview(file);
-        } else {
-            alert('Hanya file gambar yang diizinkan.');
-        }
-    }
-
-    function displayImagePreview(file) {
-        const preview = document.getElementById('imagePreview');
-        const dropText = document.getElementById('dropText');
+    function displayImagePreview(file, isEditModal = false) {
+        const preview = isEditModal 
+            ? document.getElementById('editImagePreview') 
+            : document.getElementById('imagePreview');
+        const dropText = isEditModal 
+            ? document.getElementById('editDropText') 
+            : document.getElementById('dropText');
+        const container = isEditModal
+            ? document.getElementById('editGambarProdukContainer')
+            : document.getElementById('gambarProdukContainer');
 
         const reader = new FileReader();
         reader.onload = function (e) {
             preview.src = e.target.result;
             preview.classList.remove('hidden');
             dropText.classList.add('hidden');
+            
+            // Maintain container size
+            preview.style.maxWidth = '100%';
+            preview.style.maxHeight = '100%';
+            preview.style.objectFit = 'contain';
+
+            // Ensure container keeps its original dimensions
+            container.style.height = '8rem'; // Tailwind's h-32 is equivalent to 8rem
+            container.style.display = 'flex';
+            container.style.justifyContent = 'center';
+            container.style.alignItems = 'center';
         };
 
         reader.readAsDataURL(file);
@@ -415,5 +420,29 @@
             return false;
         }
         return true;
+    }
+
+    // Update the existing functions to pass the edit modal flag
+    function previewImage() {
+        const fileInput = document.getElementById('gambarProduk');
+        const file = fileInput.files[0];
+
+        if (file && file.type.startsWith('image/')) {
+            displayImagePreview(file, false);
+        } else {
+            alert('Hanya file gambar yang diizinkan.');
+        }
+    }
+
+    // Add a similar function for edit modal
+    function previewEditImage() {
+        const fileInput = document.getElementById('editGambarProduk');
+        const file = fileInput.files[0];
+
+        if (file && file.type.startsWith('image/')) {
+            displayImagePreview(file, true);
+        } else {
+            alert('Hanya file gambar yang diizinkan.');
+        }
     }
 </script>

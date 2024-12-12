@@ -21,7 +21,7 @@
                 onkeyup="searchTable()" 
                 placeholder="Cari Pengguna" 
                 class="flex-grow border border-gray-300 px-3 py-1.5 text-sm rounded-lg focus:outline-none transition duration-300">
-            <button onclick="openModal()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300">
+            <button onclick="openModal()" class="border border-gray-300 px-5 py-2 text-sm rounded-lg focus:outline-none transition duration-300" style="background-color: #5D5108; color: white;" onmouseover="this.style.backgroundColor='#C3AB12'" onmouseout="this.style.backgroundColor='#5D5108'"">
                 Tambah Pengguna
             </button>
         </div>
@@ -118,7 +118,7 @@
             </div>
             <div class="flex justify-end mt-4">
                 <button type="button" onclick="closeModal()" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-300 mr-2">Batal</button>
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">Simpan</button>
+                <button type="submit" class="border border-gray-300 px-5 py-2 text-sm rounded-lg focus:outline-none transition duration-300" style="background-color: #5D5108; color: white;" onmouseover="this.style.backgroundColor='#C3AB12'" onmouseout="this.style.backgroundColor='#5D5108'">Simpan</button>
             </div>
         </form>
     </div>
