@@ -27,7 +27,6 @@ Route::get('/inventori', [ProdukController::class, 'index'])->name('inventori')-
 Route::get('/inventori', [ProdukController::class, 'index'])->name('inventori')->middleware('auth');
 
 
-
 // ROUTE UNTUK STAFF
 Route::get('/staf', [StaffController::class, 'index'])->middleware('auth');
 Route::post('/staff/store', [StaffController::class, 'store'])->name('staff.store')->middleware('auth');

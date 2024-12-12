@@ -113,16 +113,26 @@
         </button>
         <div class="flex items-center gap-4 mr-4">
           <!-- Notifikasi -->
-          <button class="relative">
+          <button class="relative" id="notification-button">
             <i class="bx bx-bell text-2xl text-gray-700"></i>
             <span class="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
-          </button>
+          </button>          
           <!-- Profil pengguna -->
           <div class="flex items-center gap-2">
             <span class="text-gray-700 font-bold">{{ Auth::user()->name }}</span>
           </div>          
         </div>
       </header>
+
+      @if(isset($produkMenipisKadaluarsa) && $produkMenipisKadaluarsa->count() > 0)
+      <div id="notification-content" class="absolute top-14 right-28 w-96 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-4 shadow-xl rounded-lg">
+        <strong>Perhatian!</strong> Terdapat {{ $produkMenipisKadaluarsa->count() }} produk yang mendekati kadaluarsa dalam 30 hari.
+        <button id="close-notification" class="text-sm text-gray-500 ml-2">Tutup</button>
+      </div>
+    @endif
+    
+
+      
 
       <!-- Content area -->
       <main class="flex-1 p-6 overflow-y-auto">
@@ -158,6 +168,18 @@
         mainContent.classList.add('ml-64'); // Sesuaikan margin untuk konten utama
       }
     });
+
+
+  document.getElementById('notification-button').addEventListener('click', function() {
+      const notification = document.getElementById('notification-content');
+      notification.classList.toggle('hidden');
+  });
+
+  document.getElementById('close-notification').addEventListener('click', function() {
+      const notification = document.getElementById('notification-content');
+      notification.classList.add('hidden');
+  });
+
   </script>
 </body>
 </html>
