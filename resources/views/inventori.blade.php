@@ -262,6 +262,9 @@
 <!-- Include Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- Include SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     function allowDrop(event) {
         event.preventDefault();
@@ -445,4 +448,65 @@
             alert('Hanya file gambar yang diizinkan.');
         }
     }
+
+    // Modified submit function with SweetAlert2 notification
+    document.addEventListener('DOMContentLoaded', function() {
+        // Pastikan DOM sepenuhnya dimuat
+        const form = document.getElementById('modal').querySelector('form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Menghentikan pengiriman form secara default
+
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: "Apakah Anda yakin ingin menyimpan produk baru?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, simpan!',
+                cancelButtonText: 'Tidak, batalkan!',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.value) {
+                    this.submit(); // Pastikan ini memanggil submit form
+                } else if (
+                    /* Read more about handling dismissals below */
+                    result.dismiss === Swal.DismissReason.cancel
+                ) {
+                    Swal.fire(
+                        'Dibatalkan',
+                        'Data Anda aman :)',
+                        'error'
+                    )
+                }
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const rows = document.querySelectorAll('tr');
+        rows.forEach(row => {
+            const jumlahProduk = parseInt(row.querySelector('[jumlahProduk]').getAttribute('jumlahProduk'));
+            const tanggalKadaluwarsa = new Date(row.querySelector('[data-tanggal-kadaluarsa]').getAttribute('data-tanggal-kadaluarsa'));
+            const status_tersedia = row.querySelector('.status-tersedia');
+            const status_kedaluarsa = row.querySelector('.status-kedaluarsa');
+            const today = new Date();
+
+            // Logika untuk status ketersediaan
+            if (jumlahProduk < 0) {
+                status_tersedia.textContent = 'tidak tersedia';
+            } else if (jumlahProduk < 2) {
+                status_tersedia.textContent = 'menipis';
+            } else {
+                status_tersedia.textContent = 'tersedia';
+            }
+
+            // Logika untuk status kedaluwarsa
+            if (tanggalKadaluwarsa < today) {
+                status_kedaluarsa.textContent = 'kedaluarsa';
+            } else if ((tanggalKadaluwarsa - today) / (1000 * 3600 * 24) <= 3) {
+                status_kedaluarsa.textContent = 'mendekati';
+            } else {
+                status_kedaluarsa.textContent = 'aman';
+            }
+        });
+    });
 </script>

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'inter', sans-serif;
         }
     </style>
 </head>
@@ -21,7 +21,7 @@
         <!-- Left Section -->
         <div class="flex flex-col items-center justify-center w-1/2 bg-yellow-400 p-10 text-center">
             <img src="img/logo_bang_bewok.png" alt="Logo Bang Bewok" class="w-40 mb-5">
-            <h1 class="text-2xl font-bold text-black">SISTEM INVENTORI BAHAN BAKU</h1>
+            <h1 class="text-2xl font-bold text-black">SISTEM MANAJEMEN INVENTORI BAHAN BAKU</h1>
         </div>
 
         <!-- Right Section -->
@@ -33,15 +33,14 @@
                 @csrf
                 <div class="mb-4">
                     <label for="email" class="block text-gray-700 text-sm mb-2">Email</label>
-                    <input type="email" name="email" id="email" placeholder="Masukkan Email Anda" autocomplete="off"
+                    <input type="email" name="email" id="email" placeholder="Masukkan Email Anda" autocomplete="on"
                         class="w-full mx-auto block px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none" required>
                 </div>
                 <div class="mb-4 relative">
                     <label for="password" class="block text-gray-700 text-sm mb-2">Password</label>
-                    <input type="password" name="password" id="password" placeholder="Masukkan Password Anda" autocomplete="off"
+                    <input type="password" name="password" id="password" placeholder="Masukkan Password Anda" autocomplete="on"
                         class="w-full mx-auto block px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-400 focus:outline-none" required>
-                    <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password absolute right-3 top-9 cursor-pointer"></span>
-                    <a href="#" class="text-blue-500 hover:underline absolute right-0 mt-2">Lupa Password</a>
+                    <span toggle="#password" class="fa fa-fw fa-eye field-icon toggle-password absolute right-3 top-10 cursor-pointer"></span>
                 </div>
                 <button type="submit" 
                     class="w-3/4 mx-auto block px-4 py-2 bg-black text-white rounded-md text-center hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-yellow-400">
