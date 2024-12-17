@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Staff;
+use App\Models\Cabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,9 @@ class StaffController extends Controller
     }
 
     $staffs = Staff::all();
-    return view('staf', ['staffs' => $staffs]);
+    $cabangs = Cabang::all();
+
+    return view('staf', compact('staffs', 'cabangs'));
 }
 
     public function store(Request $request)

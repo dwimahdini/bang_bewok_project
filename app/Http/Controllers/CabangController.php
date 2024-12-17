@@ -50,4 +50,14 @@ class CabangController extends Controller
     }
 }
 
+public function destroy($id)
+{
+    $cabang = Cabang::find($id);
+    if ($cabang) {
+        $cabang->delete();
+        return response()->json(['success' => true]);
+    }
+    return response()->json(['success' => false], 404);
+}
+
 }

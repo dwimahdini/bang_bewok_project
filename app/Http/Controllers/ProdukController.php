@@ -151,13 +151,21 @@ class ProdukController extends Controller
 
     public function berandaAdmin()
     {
-        if (Auth::user()->role != 'admin') {
-            abort(404);
-        }
-        $produkTersedia = Produk::where('status_tersedia', 'tersedia')->count();
-        $produkMenipis = Produk::where('status_tersedia', 'menipis')->count();
-        $produkTidakTersedia = Produk::where('status_tersedia', 'tidak tersedia')->count();
+        $produk = Produk::all();
 
-        return view('beranda', compact('produkTersedia', 'produkMenipis', 'produkTidakTersedia'));
+        $produkTersedia = $produk->where('jumlah', '>=', 2)->count();
+        $produkMenipis = $produk->where('jumlah', '<', 2)->count();
+        $produkTidakTersedia = $produk->where('jumlah', 0)->count();
+        $produkKedalursa = $produk->filter(function ($p) {
+            return Carbon::parse($p->tanggal_kadaluarsa)->isPast();
+        })->count();
+        $produkMendekati = $produk->filter(function ($p) {
+            return Carbon::parse($p->tanggal_kadaluarsa)->diffInDays(Carbon::now()) <= 3 && Carbon::parse($p->tanggal_kadaluarsa)->isFuture();
+        })->count();
+        $produkAman = $produk->filter(function ($p) {
+            return Carbon::parse($p->tanggal_kadaluarsa)->diffInDays(Carbon::now()) > 3;
+        })->count();
+
+        return view('beranda', compact('produkTersedia', 'produkMenipis', 'produkTidakTersedia', 'produkKedalursa', 'produkMendekati', 'produkAman', 'produk'));
     }
 }

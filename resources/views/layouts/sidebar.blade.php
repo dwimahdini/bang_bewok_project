@@ -7,6 +7,12 @@
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="icon" href="img/logo_bang_bewok.png" type="image/png" />
+
+  <style>
+    body {
+        font-family: 'inter', sans-serif;
+    }
+</style>
   
   <title>@yield('title', 'Default Title')</title>
   @vite('resources/css/app.css')
@@ -64,14 +70,14 @@
         @endif
 
         @if(Auth::user()->role === 'staf')
-        <a href="/pesan" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+        <a href="/pesanProduk" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
             <i class="bx bx-archive-out text-xl ml-2 text-black"></i>
             <span class="menu-text text-black">Pesan Bahan Baku</span>
         </a>
         @endif
 
         @if(Auth::user()->role === 'staf')
-        <a href="/keranjangStaf" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
+        <a href="/keranjangPesanan" class="flex items-center gap-3 text-black hover:bg-blue-100 p-2 rounded">
             <i class="bx bx-cart-alt text-xl ml-2 text-black"></i>
             <span class="menu-text text-black">Keranjang</span>
         </a>

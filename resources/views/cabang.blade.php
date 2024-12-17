@@ -6,8 +6,8 @@
 
 <div class="flex flex-wrap gap-4">
     @foreach($cabangs as $cabang)
-    <div class="max-w-xs border border-gray-200 rounded-lg shadow" style="background-color: white; width: 200px;">
-        <img class="rounded-t-lg" src="{{ asset('storage/' . $cabang->image_path) }}" alt="{{ $cabang->nama }}" style="height: 100px; width: 100%;" />
+    <div class="max-w-xs border border-gray-200 rounded-lg shadow" style="background-color: white; width: 300px; height: 300px;">
+        <img class="rounded-t-lg" src="{{ asset('storage/' . $cabang->image_path) }}" alt="{{ $cabang->nama }}" style="height: 150px; width: 100%;" />
         <div class="p-2">
             <a href="#">
                 <h5 class="mb-1 text-lg font-bold tracking-tight text-black">{{ $cabang->nama }}</h5>
@@ -20,16 +20,19 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                 </svg>
             </a>
+            <button class="mt-2 inline-flex items-center px-2 py-1 text-xs font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-600" onclick="deleteCabang('{{ $cabang->id }}')">
+                Hapus
+            </button>
         </div>
     </div>
     @endforeach
     <!-- Card untuk Menambahkan Cabang Baru -->
-    <div class="max-w-xs border border-gray-200 rounded-lg shadow p-4" style="background-color: white; width: 200px; cursor: pointer;" onclick="openAddBranchModal()">
+    <div class="max-w-xs border border-gray-200 rounded-lg shadow p-4" style="background-color: white; width: 300px; cursor: pointer;" onclick="openAddBranchModal()">
         <div class="p-3 flex items-center justify-center h-full text-center">
             <svg class="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
             </svg>
-            <h5 class="text-lg font-bold text-gray-600">Tambah Cabang Baru</h5>
+            <h5 class="text-lg font-bold text-gray-600 ">Tambah Cabang Baru</h5>
         </div>
     </div>
 </div>
@@ -42,6 +45,7 @@
                 <h3 id="modalBranchName" class="text-lg font-semibold"></h3>
             </div>
             <div class="p-4">
+                <img id="modalBranchImage" class="mb-2" src="" alt="Branch Image" style="width: 100%; height: auto;" />
                 <p id="modalBranchAddress" class="mb-2 text-sm font-normal text-black"></p>
                 <p id="modalBranchPostalCode" class="mb-2 text-sm font-normal text-black"></p>
                 <p id="modalBranchCity" class="mb-2 text-sm font-normal text-black"></p>
@@ -49,7 +53,7 @@
                 <p id="modalBranchDistrict" class="mb-2 text-sm font-normal text-black"></p>
                 <p id="modalBranchPhone" class="mb-2 text-sm font-normal text-black"></p>
                 <div class="flex justify-end">
-                    <button type="button" onclick="closeDetailModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">Close</button>
+                    <button type="button" onclick="closeDetailModal()" class="px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700">Tutup</button>
                 </div>
             </div>
         </div>
@@ -91,7 +95,7 @@
                         <input type="file" name="image_path" id="image_path" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm" required>
                     </div>
                     <div class="flex justify-end">
-                        <button type="button" onclick="closeAddBranchModal()" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">Batal</button>
+                        <button type="button" onclick="closeAddBranchModal()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Batal</button>
                         <button type="submit" class="ml-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">Tambah</button>
                     </div>
                 </form>
@@ -102,6 +106,7 @@
 
 <script>
     function openDetailModal(name, image, jalan, provinsi, kota, phone) {
+        console.log("Detail Modal Opened with:", name, image, jalan, provinsi, kota, phone);
         document.getElementById('modalBranchName').textContent = name;
         document.getElementById('modalBranchImage').src = image;
         document.getElementById('modalBranchAddress').textContent = 'Jalan: ' + jalan;
@@ -121,6 +126,29 @@
 
     function closeAddBranchModal() {
         document.getElementById('addBranchModal').classList.add('hidden');
+    }
+
+    function deleteCabang(id) {
+        if (confirm("Apakah Anda yakin ingin menghapus cabang ini?")) {
+            fetch(`/cabangs/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert("Gagal menghapus cabang.");
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Terjadi kesalahan saat menghapus cabang.");
+            });
+        }
     }
 </script>
 @endsection
