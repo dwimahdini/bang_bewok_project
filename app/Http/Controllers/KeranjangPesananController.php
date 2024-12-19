@@ -31,7 +31,23 @@ class KeranjangPesananController extends Controller
 
     public function viewCart()
     {
-        $keranjang = KeranjangPesanan::where('user_id', Auth::id())->get();
+        $keranjang = KeranjangPesanan::with('produk')
+            ->where('user_id', Auth::id())
+            ->get();
+
         return view('KeranjangPesanan', compact('keranjang'));
+    }
+
+    public function batalPesanan($id)
+    {
+        // Temukan item di keranjang berdasarkan ID
+        $item = KeranjangPesanan::find($id);
+
+        if ($item) {
+            $item->delete(); // Hapus item
+            return response()->json(['message' => 'Pesanan berhasil dibatalkan.'], 200);
+        }
+
+        return response()->json(['message' => 'Item tidak ditemukan.'], 404);
     }
 }

@@ -15,4 +15,9 @@ class KeranjangPesanan extends Model
         'produk_id',
         'jumlah',
     ];
+
+    public function produk()
+    {
+        return $this->belongsTo(Produk::class, 'produk_id');
+    }
 }

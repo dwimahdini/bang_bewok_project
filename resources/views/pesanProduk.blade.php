@@ -13,19 +13,13 @@
             $daysRemaining = $expiryDate->diffInDays($currentDate);
 
             // Tentukan status kedaluwarsa
-            if ($daysRemaining < 0) {
-                $statusKedalursa = 'Kedaluwarsa';
-            } elseif ($daysRemaining <= 3) {
-                $statusKedalursa = 'Mendekati';
-            } else {
-                $statusKedalursa = 'Aman';
-            }
+            $statusKedalursa = $daysRemaining < 0 ? 'Kedaluwarsa' : ($daysRemaining <= 3 ? 'Mendekati' : 'Aman');
         @endphp
         <div class="bg-white rounded-lg shadow-md p-2 flex flex-col min-h-64">
             <img src="{{ asset('img/' . $p->gambar) }}" alt="Gambar Produk" class="w-full h-50 object-cover rounded-lg mb-2">
             <h2 class="text-lg font-semibold">{{ $p->nama_produk }}</h2>
             <p class="text-gray-600">Harga: Rp {{ number_format($p->harga, 2, ',', '.') }}</p>
-            <p class="text-gray-600">Jumlah: {{ $p->jumlah }}</p>
+            <p id="product-quantity-{{ $p->id }}" class="text-gray-600">Jumlah: {{ $p->jumlah }}</p>
             <p class="text-gray-600">Tanggal Kadaluwarsa: {{ $expiryDate->format('Y-m-d') }}</p>
             <p class="text-gray-600">
                 <span class="font-bold {{ $statusKedalursa == 'Kedaluwarsa' ? 'text-red-500' : ($statusKedalursa == 'Mendekati' ? 'text-yellow-500' : 'text-green-500') }}">
@@ -41,9 +35,9 @@
 </div>
 
 <!-- Modal Pesan Produk -->
-<div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden" tabindex="-1" aria-hidden="true">
-    <div class="bg-white rounded-lg p-4 w-full max-w-md" role="dialog" aria-labelledby="orderTitle" aria-modal="true">
-        <h2 class="text-lg font-semibold mb-2 text-center" id="orderTitle">Pesan Produk</h2>
+<div id="orderModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="bg-white rounded-lg p-4 w-full max-w-md">
+        <h2 class="text-lg font-semibold mb-2 text-center">Pesan Produk</h2>
         <div id="orderContent">
             <p id="productName"></p>
             <p id="productPrice"></p>
@@ -60,6 +54,7 @@
 <script>
     let selectedProductId;
 
+    // Fungsi untuk membuka modal
     function openOrderModal(productId, productName, productPrice) {
         selectedProductId = productId;
         document.getElementById("productName").innerText = `Nama Produk: ${productName}`;
@@ -67,34 +62,72 @@
         document.getElementById("orderModal").classList.remove("hidden");
     }
 
+    // Fungsi untuk menutup modal
     function closeOrderModal() {
         document.getElementById("orderModal").classList.add("hidden");
     }
 
-    function confirmOrder() {
+    // Fungsi untuk mengkonfirmasi pesanan
+    async function confirmOrder() {
         const quantity = document.getElementById("quantity").value;
 
-        fetch('/keranjang', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Pastikan untuk menyertakan token CSRF
-            },
-            body: JSON.stringify({
-                productId: selectedProductId,
-                quantity: quantity
-            })
-        })
-        .then(response => {
+        try {
+            // Kirim data ke server
+            const response = await fetch('/keranjang', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    productId: selectedProductId,
+                    quantity: quantity
+                })
+            });
+
             if (response.ok) {
-                console.log(`Pesan ${quantity} dari produk ID: ${selectedProductId}`);
-                closeOrderModal();
-                // Mungkin Anda ingin memperbarui tampilan keranjang di sini
+                console.log("Produk berhasil ditambahkan ke keranjang");
+
+                // Perbarui jumlah stok produk
+                const updateResponse = await fetch(`/produk/${selectedProductId}/update`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        quantity: -quantity
+                    })
+                });
+
+                if (updateResponse.ok) {
+                    console.log(`Pesan ${quantity} dari produk ID: ${selectedProductId}`);
+                    
+                    // Perbarui tampilan jumlah produk
+                    const productElement = document.getElementById(`product-quantity-${selectedProductId}`);
+                    if (productElement) {
+                        const currentQuantityText = productElement.innerText; // "Jumlah: 5"
+                        const currentQuantity = parseInt(currentQuantityText.split(': ')[1]); // Ambil angka setelah ": "
+                        
+                        // Pastikan currentQuantity adalah angka sebelum mengurangi
+                        if (!isNaN(currentQuantity)) {
+                            productElement.innerText = `Jumlah: ${currentQuantity - quantity}`; // Update jumlah produk di tampilan
+                        } else {
+                            console.error('Jumlah produk tidak valid:', currentQuantityText);
+                        }
+                    }
+
+                    closeOrderModal();
+                } else {
+                    const errorData = await updateResponse.json();
+                    console.error('Gagal mengupdate jumlah produk:', errorData.message);
+                }
             } else {
                 console.error('Gagal menambahkan produk ke keranjang');
             }
-        })
-        .catch(error => console.error('Error:', error));
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 </script>
 @endsection

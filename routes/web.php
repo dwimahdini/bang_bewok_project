@@ -100,3 +100,14 @@ Route::post('/keranjang', [KeranjangPesananController::class, 'addToCart'])->nam
 
 // Route untuk melihat keranjang
 Route::get('/keranjangPesanan', [KeranjangPesananController::class, 'viewCart'])->name('keranjang.view')->middleware('auth');
+
+Route::post('/produk/batal/{id}', [ProdukController::class, 'batal'])->name('produk.batal');
+
+Route::post('/keranjangPesanan', [ProdukController::class, 'tambahKeKeranjang']);
+
+Route::post('/keranjangPesanan', [KeranjangPesananController::class, 'store'])->name('keranjang.store')->middleware('auth');
+Route::patch('/produk/{id}', [ProdukController::class, 'update'])->name('produk.update')->middleware('auth');
+Route::patch('/produk/{id}/update', [ProdukController::class, 'update']);
+
+Route::delete('/keranjang/{id}/batal', [KeranjangPesananController::class, 'batalPesanan']);
+

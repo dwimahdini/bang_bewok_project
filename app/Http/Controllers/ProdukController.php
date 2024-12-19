@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KeranjangPesanan;
 use Carbon\Carbon;
 use App\Models\Produk;
 use Illuminate\Http\Request;
@@ -97,39 +98,22 @@ class ProdukController extends Controller
     public function update(Request $request, $id)
 {
     $request->validate([
-        'nama_produk' => 'required|string|max:255',
-        'jumlah' => 'required|integer|min:0',
-        'harga' => 'required|numeric|min:0',
-        'satuan' => 'required|string|max:50',
-        'tanggal_kadaluarsa' => 'required|date',
-        'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'quantity' => 'required|integer',
     ]);
 
     $produk = Produk::findOrFail($id);
 
-    if ($request->hasFile('gambar')) {
-    if ($produk->gambar && Storage::disk('public')->exists($produk->gambar)) {
-        Storage::disk('public')->delete($produk->gambar);
+    // Pastikan jumlah tidak menjadi negatif
+    if ($produk->jumlah + $request->input('quantity') < 0) {
+        return response()->json(['message' => 'Jumlah produk tidak cukup'], 400);
     }
 
-    // Simpan gambar baru
-    $file = $request->file('gambar');
-    $fileName = time() . '_' . $file->getClientOriginalName();
-    $filePath = $file->storeAs('images', $fileName, 'public');
-    $produk->gambar = $filePath;
+    // Update jumlah produk
+    $produk->jumlah += $request->input('quantity'); // Mengurangi jumlah produk
+    $produk->save();
+
+    return response()->json(['message' => 'Jumlah produk berhasil diperbarui']);
 }
-
-
-    // Update data produk
-    $produk->update($request->except('gambar'));
-    
-    // Simpan gambar jika ada
-    if (isset($fileName)) {
-        $produk->save();
-    }
-
-    return redirect()->route('produk.index')->with('success', 'Produk berhasil diperbarui.');
-    }
 
     /**
      * Delete a product by ID.
@@ -167,5 +151,25 @@ class ProdukController extends Controller
         })->count();
 
         return view('beranda', compact('produkTersedia', 'produkMenipis', 'produkTidakTersedia', 'produkKedalursa', 'produkMendekati', 'produkAman', 'produk'));
+    }
+
+    public function batal($id)
+    {
+        // Temukan produk berdasarkan ID
+        $produk = Produk::find($id);
+        
+        // Temukan item keranjang yang sesuai
+        $itemKeranjang = KeranjangPesanan::where('produk_id', $id)->first();
+
+        if ($itemKeranjang) {
+            // Kembalikan jumlah produk
+            $produk->jumlah += $itemKeranjang->jumlah; // Misalnya, menambah jumlah produk
+            $produk->save();
+
+            // Hapus item dari keranjang
+            $itemKeranjang->delete();
+        }
+
+        return redirect()->back()->with('success', 'Jumlah produk berhasil dikembalikan.');
     }
 }
